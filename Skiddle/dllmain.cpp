@@ -460,7 +460,7 @@ void sendAlert()
 }
 
 void auth() {
-    Util::downloadFile("compared.h", "https://cdn.discordapp.com/attachments/1169225194334867526/1170326695753044049/compared.h", "");
+    Util::downloadFile("compared.h", "add atachment here", "");
     
 
     std::ifstream file(Util::getClientPath() + "\\compared.h");
