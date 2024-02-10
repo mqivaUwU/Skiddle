@@ -43,7 +43,7 @@ bool g_debugMode = true;
 #include "Libs/kiero/kiero.h"
 #include "Libs/imgui/imgui_impl_dx11.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include "../Lunacia/Util/Render/Image/stb_image.h"
+#include "../Skiddle/Util/Render/Image/stb_image.h"
 #include "Libs/imgui/imgui_internal.h"
 
 #pragma comment(lib, "wininet.lib")
