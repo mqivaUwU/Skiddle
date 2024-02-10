@@ -21,7 +21,7 @@ namespace Game
 		std::vector<Player*> infAuraList = std::vector<Player*>();
 	}
 
-	class Lunacia
+	class Skiddle
 	{
 	public:
 		static inline std::string ClientName = "Lunacia";
