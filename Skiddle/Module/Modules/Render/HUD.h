@@ -27,6 +27,10 @@ public:
         registerFloatSetting("R2", "", &r2, 0, 255);
         registerFloatSetting("G2", "", &g2, 0, 255);
         registerFloatSetting("B2", "", &b2, 0, 255);
+
+        registerFloatSetting("R3", "", &r, 0, 255);
+        registerFloatSetting("G3", "", &g, 0, 255);
+        registerFloatSetting("B3", "", &b, 0, 255);
         //registerBoolSetting("Big Watermark", "", &bigwatermark);
         registerBoolSetting("Watermark", "", &watermark);
         registerFloatSetting("Scale", "", &scale, 0.5, 4);
