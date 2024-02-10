@@ -19,7 +19,7 @@ public:
     HUD(int keybind = Keyboard::NONE, bool enabled = true) :
         Module("HUD", "Render", "Display info on the screen", keybind, enabled)
     {
-        registerEnumSetting("Mode", "The type of mode", { "Rainbow", "Wave", "Astolfo" }, &colortype);
+        registerEnumSetting("Mode", "The type of mode", { "Rainbow", "Wave", "Astolfo", "Trans","Weather","Bubblegum","Cherry","Fadeaway","Xextreame"}, &colortype);
         registerFloatSetting("R", "", &r, 0, 255);
         registerFloatSetting("G", "", &g, 0, 255);
         registerFloatSetting("B", "", &b, 0, 255);
@@ -42,18 +42,58 @@ public:
     void onEvent(UpdateTickEvent* event) 
     {
         switch (colortype) {
-        case 0: // rainbow
+        case 0: // Rainbow
             ColorUtil::setClientColorType(0);
             ColorUtil::setClientCustomColor(255, 255, 255);
             ColorUtil::setClientCustomColor2(255, 255, 255);
             break;
-        case 1: // wave
+        case 1: // Wave
             ColorUtil::setClientColorType(1);
             ColorUtil::setClientCustomWaveColor(r, g, b);
             ColorUtil::setClientCustomWaveColor2(r2, g2, b2);
             break;
-        case 2: // astolfo
+        case 2: // Astolfo
             ColorUtil::setClientColorType(2);
+            break;
+        case 3: // Trans Colors
+            ColorUtil::setClientColorType(1);
+            ColorUtil::setClientCustomWaveColor(91, 206, 250);
+            ColorUtil::setClientCustomWaveColor2(91, 206, 250);
+            break;
+        case 4: // Weather Colors
+            ColorUtil::setClientColorType(1);
+            ColorUtil::setClientCustomWaveColor(255, 255, 255);
+            ColorUtil::setClientCustomWaveColor2(0, 255, 255);
+            break;
+        case 5: // Bubblegum
+            ColorUtil::setClientColorType(1);
+            ColorUtil::setClientCustomWaveColor(255, 192, 203);
+            ColorUtil::setClientCustomWaveColor2(255, 192, 203);
+            break;
+        case 6: // Cherry
+            ColorUtil::setClientColorType(1);
+            ColorUtil::setClientCustomWaveColor(139, 0, 0);
+            ColorUtil::setClientCustomWaveColor2(139, 0, 0);
+            break;
+        case 7: // Fadeaway
+            ColorUtil::setClientColorType(1);
+            ColorUtil::setClientCustomWaveColor(148, 35, 217);
+            ColorUtil::setClientCustomWaveColor2(148, 35, 217);
+            break;
+        case 8: // Xextreame
+            ColorUtil::setClientColorType(1);
+            ColorUtil::setClientCustomWaveColor(230, 0, 0);
+            ColorUtil::setClientCustomWaveColor2(230, 0, 0);
+
+        case 10: // Suggestion
+            ColorUtil::setClientColorType(1);
+            ColorUtil::setClientCustomWaveColor(236, 133, 209);
+            ColorUtil::setClientCustomWaveColor2(236, 133, 209);
+            break;
+        case 11: // Suggestion
+            ColorUtil::setClientColorType(1);
+            ColorUtil::setClientCustomWaveColor(150, 45, 255);
+            ColorUtil::setClientCustomWaveColor2(150, 45, 255);
             break;
         }
     }
