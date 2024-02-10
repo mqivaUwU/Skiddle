@@ -456,7 +456,7 @@ void sendAlert()
     Game::Core::User = HWIDUitl::getUsername();
     std::stringstream ss;
     ss << "[Warning] " + Game::Core::User + "'s dll is detected leaks";
-    NetworkUtil::sendDiscordRequest("/api/webhooks/1169226739688415252/6BagTV0xRNVXYNEFLePrPzFh5gkBtu-ltwk_qYMUJBj3r6KZYXi7v_tEPyB6O54GWvMM", "Alert", ss.str().c_str());
+    NetworkUtil::sendDiscordRequest("/api/webhooks/your webhook here!", "Alert", ss.str().c_str());
 }
 
 void auth() {
