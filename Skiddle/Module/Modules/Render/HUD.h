@@ -11,15 +11,17 @@ private:
     int onece1 = 0;
 
 public:
-    int colortype = 10;
+    int colortype = 2;
     bool bigwatermark = true;
     bool watermark = true;
+    bool showFPS = true; // New variable to control FPS text visibility
+    bool showBPS = true; // New variable to control BPS text visibility
     float scale = 2.6f;
 
     HUD(int keybind = Keyboard::NONE, bool enabled = true) :
         Module("HUD", "Render", "Display info on the screen", keybind, enabled)
     {
-        registerEnumSetting("Mode", "The type of mode", { "Gay", "Custom", "Astolfo", "Trans","Weather","Bubblegum","Cherry","Fadeaway","Xextreame","Zipppo"}, &colortype);
+        registerEnumSetting("Mode", "The type of mode", { "Gay", "Custom", "Astolfo", "Trans","Weather","Bubblegum","Cherry","Fadeaway","Xextreame","Zipppo" }, &colortype);
         registerFloatSetting("R", "", &r, 0, 255);
         registerFloatSetting("G", "", &g, 0, 255);
         registerFloatSetting("B", "", &b, 0, 255);
@@ -28,6 +30,10 @@ public:
         registerFloatSetting("G2", "", &g2, 0, 255);
         registerFloatSetting("B2", "", &b2, 0, 255);
 
+        // New registerBoolSettings for FPS and BPS visibility
+        registerBoolSetting("Show FPS", "", &showFPS);
+        registerBoolSetting("Show BPS", "", &showBPS);
+
         //registerBoolSetting("Big Watermark", "", &bigwatermark);
         registerBoolSetting("Watermark", "", &watermark);
         registerFloatSetting("Scale", "", &scale, 0.5, 4);
@@ -35,12 +41,8 @@ public:
 
     float r = 120, g = 35, b = 255;
     float r2 = 0, g2 = 0, b2 = 0;
-    /*
-    float r = 255, g = 123, b = 0;
-    float r2 = 255, g2 = 255, b2 = 255;*/
 
-
-    void onEvent(UpdateTickEvent* event) 
+    void onEvent(UpdateTickEvent* event) override
     {
         switch (colortype) {
         case 0: // Gay
@@ -61,7 +63,6 @@ public:
             ColorUtil::setClientCustomWaveColor(255, 255, 255); // Set custom wave color 1 to White
             ColorUtil::setClientCustomWaveColor2(128, 128, 255); // Set custom wave color 2 to a mix of Pink and Blue
             break;
-
         case 4: // Weather Colors
             ColorUtil::setClientColorType(1);
             ColorUtil::setClientCustomWaveColor(255, 255, 255);  // White
@@ -86,7 +87,7 @@ public:
             ColorUtil::setClientColorType(1);
             ColorUtil::setClientCustomWaveColor(230, 0, 0);
             ColorUtil::setClientCustomWaveColor2(230, 0, 0);
-
+            break;
         case 10: // Zipppo
             ColorUtil::setClientColorType(1);
             ColorUtil::setClientCustomWaveColor(253, 223, 231);
@@ -100,7 +101,6 @@ public:
         }
     }
 
-
     void onEvent(ImGUIRenderEvent* event) override
     {
         Player* player = Game::GetLocalPlayer();
@@ -112,14 +112,19 @@ public:
         oss.precision(2);
         oss << std::fixed << player->getHorizontalSpeed();
 
-        if (Game::Core::showMenu) {
-            drawTile(combine("FPS: ", Game::gameFps), 1);
-            drawTile(combine("BPS: ", oss.str().c_str()), 0);
-        }
-    
+        // Rendering FPS and BPS based on the new showFPS and showBPS settings
+        if (Game::Core::showMenu)
+        {
+            if (showFPS)
+                drawTile(combine("FPS: ", Game::gameFps), 1, colortype);
 
-        /// Watermark
-        if (watermark && Game::Core::showMenu) {
+            if (showBPS)
+                drawTile(combine("BPS: ", oss.str().c_str()), 0, colortype);
+        }
+
+        // Watermark
+        if (watermark && Game::Core::showMenu)
+        {
             logoPos = logoPos.animate(Vector2<float>(6.f, 6.f), logoPos, RenderUtil::getDeltaTime() * 10.f);
 
             Vector2<float> pos2 = logoPos;
@@ -135,31 +140,34 @@ public:
                 float charHeight = ImRenderUtil::getTextHeight(fontSize);
                 Vector4<float> rect(pos2.x, pos2.y, pos2.x + 20, pos2.y + 20);
                 ImRenderUtil::drawShadowSquare(Vector2<float>(pos2.x + charWidth / 2, pos2.y + charHeight / 1.2), 15.f, ColorUtil::getClientColor(2.1, 1, 1, colorIndex * 80), 1.f, 70.f, 0);
-                // ImRenderUtil::drawShadowSquare(Vector2<float>(pos2.x + charWidth / 2, pos2.y + charHeight / 1.2), 15.f, ColorUtil::getClientColor(3, 1, 1, -colorIndex * 85), 1.f, 70.f, 0);
-                if (bigwatermark) {
+
+                if (bigwatermark)
+                {
                     ImRenderUtil::drawText(Vector2<float>(pos2.x + 10, pos2.y + 10), &string, ColorUtil::getClientColor(2.1, 1, 1, colorIndex * 80), fontSize, 1, true);
                     ImRenderUtil::drawText(Vector2<float>(pos2.x + 11.5, pos2.y + 10), &string, ColorUtil::getClientColor(2.1, 1, 1, colorIndex * 80), fontSize, 1, true);
                 }
-                else {
+                else
+                {
                     ImRenderUtil::drawText(Vector2<float>(pos2.x + 10, pos2.y + 10), &string, ColorUtil::getClientColor(2.1, 1, 1, colorIndex * 80), fontSize, 1, true);
                 }
-              
+
                 pos2.x += charWidth;
                 ++ind;
             }
         }
 
-
-
-        // Anti Piracy Screen lol
-        if (Game::detectedleaks) {
+        // Anti Piracy Screen
+        if (Game::detectedleaks)
+        {
             Util::downloadFile("Error.wav", "", "Assets\\Sounds\\Client\\");
             Util::downloadFile("Error0.wav", "", "Assets\\Sounds\\Client\\");
             Util::downloadFile("AntiPiracyScreen.png", "", "Assets\\Images\\");
             Util::downloadFile("AntiPiracyScreen2.png", "", "Assets\\Images\\");
 
-            if (delay0 > delay) {
-                if (onece1 == 0) {
+            if (delay0 > delay)
+            {
+                if (onece1 == 0)
+                {
                     Util::systemPlay("Sounds\\Client\\Error.wav");
                     Game::GetInstance()->releaseCursor();
                     onece1++;
@@ -170,18 +178,23 @@ public:
                 Game::Core::showAntiPiracyScreen1 = true;
                 Game::Core::showMenu = false;
             }
-            else {
+            else
+            {
                 delay0++;
             }
         }
     }
 
-    void drawTile(std::string tileDescr, int index = 2)
+    void drawTile(std::string tileDescr, int index, int colortype)
     {
         Vector2<float> tilePos = Vector2<float>(5, (Game::Core::ClientInstance->getGuiData()->WindowResolution2.y - 25) - (index * 16.f));
         Vector4<float> rectPos = Vector4<float>(5, (Game::Core::ClientInstance->getGuiData()->WindowResolution2.y - 15) - (index * 16.f), 60, (Game::Core::ClientInstance->getGuiData()->WindowResolution2.y - 15) - (index * 16.f));
+
+        // Use the selected client color for text
+        UIColor textColor = ColorUtil::getClientColor(2.1, 1, 1, colortype * 80);
+
         ImRenderUtil::fillShadowRectangle(rectPos, UIColor(0, 0, 0), 0.8f, 50.f, 0);
-        ImRenderUtil::drawText(tilePos, &tileDescr, UIColor(255, 255, 255), 1.2f, 1, true);
+        ImRenderUtil::drawText(tilePos, &tileDescr, textColor, 1.2f, 1, true);
 
         float width = ImRenderUtil::getTextWidth(&tileDescr, 1);
 
