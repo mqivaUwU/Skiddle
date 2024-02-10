@@ -1,6 +1,6 @@
 #pragma once
 #include "HUD.h"
-class WatermarkModule : public Module
+class Watermark : public Module
 {
 private:
     Vector2<float> logoPos = Vector2<float>(-20, -20); //lmao
@@ -10,7 +10,7 @@ private:
 public:
     bool watermark = true;
 
-    WatermarkModule(int keybind = Keyboard::NONE, bool enabled = true) :
+    Watermark(int keybind = Keyboard::NONE, bool enabled = true) :
         Module("Watermark", "Render", "Display watermark on the screen", keybind, enabled)
     {
         registerBoolSetting("Watermark", "", &watermark);

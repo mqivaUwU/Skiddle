@@ -21,6 +21,7 @@
 #include "Modules/Render/Nametags.h"
 #include "Modules/Render/Trail.h"
 #include "Modules/Render/ESP.h"
+#include "Modules/Render/Watermark.h"
 
 // Movement
 #include "Modules/Movement/FastStop.h"
@@ -78,6 +79,7 @@ void InitializeModules()
 	modules.push_back(new Nametags(Keyboard::NONE));
 	modules.push_back(new Trail(Keyboard::NONE));
 	modules.push_back(new ESP(Keyboard::NONE));
+	modules.push_back(new Watermark(Keyboard::NONE));
 
 	// Movement
 	modules.push_back(new FastStop(Keyboard::NONE));
