@@ -19,7 +19,7 @@ public:
     HUD(int keybind = Keyboard::NONE, bool enabled = true) :
         Module("HUD", "Render", "Display info on the screen", keybind, enabled)
     {
-        registerEnumSetting("Mode", "The type of mode", { "Gay", "Custom", "Astolfo", "Trans","Weather","Bubblegum","Cherry","Fadeaway","Xextreame"}, &colortype);
+        registerEnumSetting("Mode", "The type of mode", { "Gay", "Custom", "Astolfo", "Trans","Weather","Bubblegum","Cherry","Fadeaway","Xextreame","Zipppo"}, &colortype);
         registerFloatSetting("R", "", &r, 0, 255);
         registerFloatSetting("G", "", &g, 0, 255);
         registerFloatSetting("B", "", &b, 0, 255);
@@ -87,10 +87,10 @@ public:
             ColorUtil::setClientCustomWaveColor(230, 0, 0);
             ColorUtil::setClientCustomWaveColor2(230, 0, 0);
 
-        case 10: // Suggestion
+        case 10: // Zipppo
             ColorUtil::setClientColorType(1);
-            ColorUtil::setClientCustomWaveColor(236, 133, 209);
-            ColorUtil::setClientCustomWaveColor2(236, 133, 209);
+            ColorUtil::setClientCustomWaveColor(253, 223, 231);
+            ColorUtil::setClientCustomWaveColor2(253, 223, 231);
             break;
         case 11: // Suggestion
             ColorUtil::setClientColorType(1);
