@@ -103,6 +103,11 @@ public:
 		rgb2 = UIColor(r, g, b);
 		return UIColor(r * 255, g * 255, b * 255);
 	}
+	inline static UIColor setClientCustomWaveColor3(float r = 255, float g = 255, float b = 255)
+	{
+		rgb1 = UIColor(r, g, b);
+		return UIColor(r * 255, g * 255, b * 255);
+	}
 
 	// Rainbow = 0, Wave = 1, astolfo = 2
 	static void setClientColorType(int type)

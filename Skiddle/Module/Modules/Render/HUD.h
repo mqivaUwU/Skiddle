@@ -57,9 +57,11 @@ public:
             break;
         case 3: // Trans Colors
             ColorUtil::setClientColorType(1);
-            ColorUtil::setClientCustomWaveColor(255, 182, 193); // Light Pink
-            ColorUtil::setClientCustomWaveColor2(255, 255, 255); // White
+            ColorUtil::setClientCustomWaveColor(255, 182, 193); // Set custom wave color to Light Pink
+            ColorUtil::setClientCustomWaveColor2(255, 255, 255); // Set custom wave color 2 to White
+            ColorUtil::setClientCustomWaveColor3(0, 0, 255); // Set custom wave color 3 to Blue
             break;
+
         case 4: // Weather Colors
             ColorUtil::setClientColorType(1);
             ColorUtil::setClientCustomWaveColor(255, 255, 255);  // White
