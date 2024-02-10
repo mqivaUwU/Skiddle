@@ -74,7 +74,7 @@ void InitializeModules()
 	modules.push_back(new ArrayList(Keyboard::NONE, true));
 	modules.push_back(new HUD(Keyboard::NONE, true));
 	modules.push_back(new Ambience(Keyboard::NONE));
-	modules.push_back(new ClickGUI(Keyboard::TAB));
+	modules.push_back(new ClickGUI(Keyboard::INSERT));
 	modules.push_back(new Nametags(Keyboard::NONE));
 	modules.push_back(new Trail(Keyboard::NONE));
 	modules.push_back(new ESP(Keyboard::NONE));
