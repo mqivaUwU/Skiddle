@@ -11,7 +11,7 @@ private:
     int onece1 = 0;
 
 public:
-    int colortype = 1;
+    int colortype = 10;
     bool bigwatermark = true;
     bool watermark = true;
     float scale = 2.6f;
