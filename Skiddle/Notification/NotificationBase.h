@@ -13,7 +13,7 @@ struct NotificationData {
 		startTime = std::chrono::steady_clock::now();
 	}
 
-	inline float getElapsedTime()
+	inline float getElapsedTime() const
 	{
 		auto currentTime = std::chrono::steady_clock::now();
 		auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startTime).count();
