@@ -1,5 +1,5 @@
 #pragma once
-
+#include "HUD.h"
 class WatermarkModule : public Module
 {
 private:
