@@ -15,7 +15,7 @@ public:
         registerFloatSetting("EaseSpeed", "The speed it zooms in", &animationSpeed, 5, 15);
         
         visible_ = false;
-        ingameOnly = false;
+        ingameOnly = true;
         callWhenDisabled = true;
     }
 
