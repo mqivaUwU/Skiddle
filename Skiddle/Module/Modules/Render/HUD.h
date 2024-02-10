@@ -4,7 +4,7 @@
 class HUD : public Module
 {
 public:
-    int colortype = 10;
+    int colortype = 2;
     bool showFPS = true;
     bool showBPS = true;
     float scale = 2.6f;
