@@ -45,7 +45,7 @@ void InitializeHooks()
         &HurtcamHook::Instance(),
         &RakPeerHooks::Instance(),
         &CameraHooks::Instance(),
-        &ChatLogHook::Instance(),
+        //&ChatLogHook::Instance(), Ugly AF
         &GammaTickHook::Instance(),
         &getTimeHook::Instance(),
     };
