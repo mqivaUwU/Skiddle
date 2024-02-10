@@ -9,7 +9,7 @@ public:
     ChatSuffix(int keybind = Keyboard::NONE, bool enabled = false) :
         Module("ChatSuffix", "Misc", "Add suffix", keybind, enabled)
     {
-        registerEnumSetting("Font", "The type of font", { "Normal", "Lowercase" }, &fonts);
+        registerEnumSetting("Font", "The type of font", { "Normal" }, &fonts);
     }
 
     void removeTrailingSpace(std::string& str) {
@@ -36,10 +36,6 @@ public:
             switch (fonts) {
             case 0: // Normal
                 end = " | " + Game::Skiddle::ClientName;
-                break;
-            case 1: // Lowercase
-                end = u8" | ʟᴜɴᴀᴄɪᴀ";
-                break;
             }
 
             std::string text = textpacket->message.getText();
