@@ -57,23 +57,23 @@ public:
             break;
         case 3: // Trans Colors
             ColorUtil::setClientColorType(1);
-            ColorUtil::setClientCustomWaveColor(91, 206, 250);
-            ColorUtil::setClientCustomWaveColor2(91, 206, 250);
+            ColorUtil::setClientCustomWaveColor(255, 182, 193); // Light Pink
+            ColorUtil::setClientCustomWaveColor2(255, 255, 255); // White
             break;
         case 4: // Weather Colors
             ColorUtil::setClientColorType(1);
-            ColorUtil::setClientCustomWaveColor(255, 255, 255);
-            ColorUtil::setClientCustomWaveColor2(0, 255, 255);
+            ColorUtil::setClientCustomWaveColor(255, 255, 255);  // White
+            ColorUtil::setClientCustomWaveColor2(0, 191, 255);   // Deep Sky Blue
             break;
         case 5: // Bubblegum
             ColorUtil::setClientColorType(1);
-            ColorUtil::setClientCustomWaveColor(255, 192, 203);
-            ColorUtil::setClientCustomWaveColor2(255, 192, 203);
+            ColorUtil::setClientCustomWaveColor(255, 182, 193);  // Light Pink
+            ColorUtil::setClientCustomWaveColor2(255, 182, 193); // Light Pink
             break;
         case 6: // Cherry
             ColorUtil::setClientColorType(1);
-            ColorUtil::setClientCustomWaveColor(139, 0, 0);
-            ColorUtil::setClientCustomWaveColor2(139, 0, 0);
+            ColorUtil::setClientCustomWaveColor(178, 34, 34);    // Firebrick
+            ColorUtil::setClientCustomWaveColor2(178, 34, 34);   // Firebrick
             break;
         case 7: // Fadeaway
             ColorUtil::setClientColorType(1);
