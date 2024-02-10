@@ -9,7 +9,7 @@ public:
     float animationSpeed = 15.f; // Ease speed
     int scrollDirection = 0;
 
-    ClickGUI(int keybind = Keyboard::TAB, bool enabled = false) : Module("ClickGUI", "Render", "Display all modules", keybind, enabled)
+    ClickGUI(int keybind = Keyboard::INSERT, bool enabled = false) : Module("ClickGUI", "Render", "Display all modules", keybind, enabled)
     {
         registerEnumSetting("Ease", "The way it zooms in", { "Expo", "Elastic" }, &animationMode);
         registerFloatSetting("EaseSpeed", "The speed it zooms in", &animationSpeed, 5, 15);
