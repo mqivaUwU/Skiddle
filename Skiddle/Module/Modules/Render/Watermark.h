@@ -1,31 +1,34 @@
 #pragma once
 #include "HUD.h"
-class Watermark : public Module
-{
+
+class Watermark : public Module {
 private:
-    Vector2<float> logoPos = Vector2<float>(-20, -20); //lmao
+    Vector2<float> logoPos = Vector2<float>(-20, -20); // Initial position
     bool bigwatermark = true;
     float scale = 2.6f;
 
 public:
-    bool watermark = true;
-
     Watermark(int keybind = Keyboard::NONE, bool enabled = true) :
         Module("Watermark", "Render", "Display watermark on the screen", keybind, enabled)
     {
-        registerBoolSetting("Watermark", "", &watermark);
-        registerBoolSetting("Big Watermark", "", &bigwatermark);
+        // You can register settings here if needed
+        // registerBoolSetting("Big Watermark", "", &bigwatermark);
         registerFloatSetting("Scale", "", &scale, 0.5, 4);
     }
 
     void onEvent(ImGUIRenderEvent* event) override
     {
+        // Check if the module is enabled
+        if (!isEnabled()) {
+            return;
+        }
+
         Player* player = Game::GetLocalPlayer();
 
         if (!player)
             return;
 
-        if (watermark && Game::Core::showMenu)
+        if (Game::Core::showMenu)
         {
             logoPos = logoPos.animate(Vector2<float>(6.f, 6.f), logoPos, RenderUtil::getDeltaTime() * 10.f);
 
@@ -63,11 +66,13 @@ public:
         }
     }
 
-    void onEnabled() {
-        logoPos = Vector2<float>(-20, -20);
+    void onEnabled() override {
+        // This method is called when the module is enabled
+        logoPos = Vector2<float>(-20, -20); // Reset the position
     }
 
-    void onDisabled() {
-        setEnabled(true);
+    void onDisabled() override {
+        // This method is called when the module is disabled
+        // No specific actions needed in this case
     }
 };
