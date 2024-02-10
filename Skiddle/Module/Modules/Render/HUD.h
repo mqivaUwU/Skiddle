@@ -19,7 +19,7 @@ public:
     HUD(int keybind = Keyboard::NONE, bool enabled = true) :
         Module("HUD", "Render", "Display info on the screen", keybind, enabled)
     {
-        registerEnumSetting("Mode", "The type of mode", { "Rainbow", "Wave", "Astolfo", "Trans","Weather","Bubblegum","Cherry","Fadeaway","Xextreame"}, &colortype);
+        registerEnumSetting("Mode", "The type of mode", { "Gay", "Custom", "Astolfo", "Trans","Weather","Bubblegum","Cherry","Fadeaway","Xextreame"}, &colortype);
         registerFloatSetting("R", "", &r, 0, 255);
         registerFloatSetting("G", "", &g, 0, 255);
         registerFloatSetting("B", "", &b, 0, 255);
@@ -27,7 +27,7 @@ public:
         registerFloatSetting("R2", "", &r2, 0, 255);
         registerFloatSetting("G2", "", &g2, 0, 255);
         registerFloatSetting("B2", "", &b2, 0, 255);
-        registerBoolSetting("Big Watermark", "", &bigwatermark);
+        //registerBoolSetting("Big Watermark", "", &bigwatermark);
         registerBoolSetting("Watermark", "", &watermark);
         registerFloatSetting("Scale", "", &scale, 0.5, 4);
     }
@@ -42,12 +42,12 @@ public:
     void onEvent(UpdateTickEvent* event) 
     {
         switch (colortype) {
-        case 0: // Rainbow
+        case 0: // Gay
             ColorUtil::setClientColorType(0);
             ColorUtil::setClientCustomColor(255, 255, 255);
             ColorUtil::setClientCustomColor2(255, 255, 255);
             break;
-        case 1: // Wave
+        case 1: // Custom
             ColorUtil::setClientColorType(1);
             ColorUtil::setClientCustomWaveColor(r, g, b);
             ColorUtil::setClientCustomWaveColor2(r2, g2, b2);
