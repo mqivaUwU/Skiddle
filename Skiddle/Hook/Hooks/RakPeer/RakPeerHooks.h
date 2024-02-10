@@ -4,7 +4,7 @@ void* oNetSkip;
 class RakPeerHooks : public FuncHook {
 public:
     static __int64 RakPeer_RunUpdateCycle(__int64 _this, __int64 a1) {
-        if (Game::Lunacia::skipTicks) {
+        if (Game::Skiddle::skipTicks) {
             return 0;
         }
         return CallFunc<__int64, __int64, __int64>(oNetSkip, _this, a1);

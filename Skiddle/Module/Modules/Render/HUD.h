@@ -83,7 +83,7 @@ public:
             Vector2<float> pos2 = logoPos;
             int ind = 0;
             float fontSize = scale;
-            for (char c : (std::string)Game::Lunacia::ClientName)
+            for (char c : (std::string)Game::Skiddle::ClientName)
             {
                 std::string string = combine(c, "");
 
@@ -111,10 +111,10 @@ public:
 
         // Anti Piracy Screen lol
         if (Game::detectedleaks) {
-            Util::downloadFile("Error.wav", "https://cdn.discordapp.com/attachments/1163476805727031377/1170291954781798430/Error.wav", "Assets\\Sounds\\Client\\");
-            Util::downloadFile("Error0.wav", "https://cdn.discordapp.com/attachments/1163476805727031377/1170384873274478602/Error0.wav", "Assets\\Sounds\\Client\\");
-            Util::downloadFile("AntiPiracyScreen.png", "https://cdn.discordapp.com/attachments/1163476805727031377/1170401551123234826/AntiPiracyScreen.png", "Assets\\Images\\");
-            Util::downloadFile("AntiPiracyScreen2.png", "https://cdn.discordapp.com/attachments/1163476805727031377/1170401550833819758/AntiPiracyScreen2.png", "Assets\\Images\\");
+            Util::downloadFile("Error.wav", "", "Assets\\Sounds\\Client\\");
+            Util::downloadFile("Error0.wav", "", "Assets\\Sounds\\Client\\");
+            Util::downloadFile("AntiPiracyScreen.png", "", "Assets\\Images\\");
+            Util::downloadFile("AntiPiracyScreen2.png", "", "Assets\\Images\\");
 
             if (delay0 > delay) {
                 if (onece1 == 0) {
@@ -124,7 +124,7 @@ public:
                 }
 
                 Game::Core::showMenuBackground = false;
-                Game::Lunacia::showNotification = false;
+                Game::Skiddle::showNotification = false;
                 Game::Core::showAntiPiracyScreen1 = true;
                 Game::Core::showMenu = false;
             }

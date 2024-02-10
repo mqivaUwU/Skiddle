@@ -35,7 +35,7 @@ public:
             std::string end;
             switch (fonts) {
             case 0: // Normal
-                end = " | " + Game::Lunacia::ClientName;
+                end = " | " + Game::Skiddle::ClientName;
                 break;
             case 1: // Lowercase
                 end = u8" | ʟᴜɴᴀᴄɪᴀ";

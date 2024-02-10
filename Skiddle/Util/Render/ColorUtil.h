@@ -130,7 +130,7 @@ public:
 	{
 		std::vector<std::pair<float, UIColor>> colorMap;
 
-		switch (Game::Lunacia::ClientColor)
+		switch (Game::Skiddle::ClientColor)
 		{
 		case 0:
 			return getRainbow(seconds, saturation, brightness, index);

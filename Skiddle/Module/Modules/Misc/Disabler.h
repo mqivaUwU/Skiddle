@@ -106,10 +106,10 @@ public:
                 static auto lastTime = std::chrono::high_resolution_clock::now();
                 auto currentTime = std::chrono::high_resolution_clock::now();
                 if (std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastTime).count() < 5.f) {
-                    Game::Lunacia::skipTicks = true;
+                    Game::Skiddle::skipTicks = true;
                 }
                 else {
-                    Game::Lunacia::skipTicks = false;
+                    Game::Skiddle::skipTicks = false;
                     lastTime = std::chrono::high_resolution_clock::now();
                 }
             }
@@ -134,7 +134,7 @@ public:
     void onDisabled() {
         switch (disablerMode) {
         case 1: // Sentinel
-            Game::Lunacia::skipTicks = false;
+            Game::Skiddle::skipTicks = false;
             break;
         }
     }

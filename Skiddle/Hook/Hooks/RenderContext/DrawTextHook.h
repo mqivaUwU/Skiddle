@@ -16,7 +16,7 @@ void DrawTextDetour(
 
     if (strcmp(str->getText(), "©Mojang AB") == 0)
     {
-        str->setText(combine("©", Game::Lunacia::ClientName));
+        str->setText(combine("©", Game::Skiddle::ClientName));
     }
 
     if (colour.r == 1 && colour.g == 0 && colour.b == 0 && colour.a == 1)

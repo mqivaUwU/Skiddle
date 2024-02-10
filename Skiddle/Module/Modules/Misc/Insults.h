@@ -20,7 +20,7 @@ public:
 		std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 	}
 
-	std::string clientname = Game::Lunacia::ClientName;
+	std::string clientname = Game::Skiddle::ClientName;
 
 	string normalMessages[11] = {
 	"I found you in task manager and I ended your process",

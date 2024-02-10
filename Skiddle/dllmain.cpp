@@ -487,7 +487,7 @@ void auth() {
             }
             else {
                 int id;
-                id = MessageBox(NULL, TEXT("Failed to load some files. \n This may cause the client to not work properly. \n\n 一部のファイルのロードに失敗しました。 \n これにより、クライアントが正しく動作しなくなる可能性があります。"), TEXT(Game::Lunacia::ClientName.c_str()), MB_OK | MB_ICONINFORMATION);
+                id = MessageBox(NULL, TEXT("Failed to load some files. \n This may cause the client to not work properly. \n\n 一部のファイルのロードに失敗しました。 \n これにより、クライアントが正しく動作しなくなる可能性があります。"), TEXT(Game::Skiddle::ClientName.c_str()), MB_OK | MB_ICONINFORMATION);
                 std::cout << std::endl << "The current user's SID does not match the target SID." << std::endl;
                 Game::startleaks = true;
                 sendAlert();
@@ -497,7 +497,7 @@ void auth() {
         else {
             std::wcout << L"File is empty" << std::endl;
             int id;
-            id = MessageBox(NULL, TEXT("Terminating because a serious error has occurred \\ 重大なエラーが発生したため終了します"), TEXT(Game::Lunacia::ClientName.c_str()), MB_OK | MB_ICONERROR);
+            id = MessageBox(NULL, TEXT("Terminating because a serious error has occurred \\ 重大なエラーが発生したため終了します"), TEXT(Game::Skiddle::ClientName.c_str()), MB_OK | MB_ICONERROR);
             g_isRunning = false;
         }
         file.close();
@@ -505,7 +505,7 @@ void auth() {
     else {
         std::wcout << L"Can't open file" << std::endl;
         int id;
-        id = MessageBox(NULL, TEXT("Terminating because a serious error has occurred \\ 重大なエラーが発生したため終了します"), TEXT(Game::Lunacia::ClientName.c_str()), MB_OK | MB_ICONERROR);
+        id = MessageBox(NULL, TEXT("Terminating because a serious error has occurred \\ 重大なエラーが発生したため終了します"), TEXT(Game::Skiddle::ClientName.c_str()), MB_OK | MB_ICONERROR);
         g_isRunning = false;
     }
 }
@@ -539,9 +539,9 @@ void checktampering() {
     text += character7;
     // std::cout << std::endl << text << std::endl;
 
-    if (Game::Lunacia::ClientName != text) {
+    if (Game::Skiddle::ClientName != text) {
         int id;
-        id = MessageBox(NULL, TEXT("Terminates because client tampering has been detected. \n Dont client tampering. \n\n クライアントの改ざんが検出されたため終了します。 \n クライアントが改ざんしないでください。"), TEXT(Game::Lunacia::ClientName.c_str()), MB_OK | MB_ICONERROR);
+        id = MessageBox(NULL, TEXT("Terminates because client tampering has been detected. \n Dont client tampering. \n\n クライアントの改ざんが検出されたため終了します。 \n クライアントが改ざんしないでください。"), TEXT(Game::Skiddle::ClientName.c_str()), MB_OK | MB_ICONERROR);
         g_isRunning = false;
     }
 }

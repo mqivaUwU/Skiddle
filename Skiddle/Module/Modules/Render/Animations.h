@@ -7,7 +7,7 @@ public:
     Animations(int keybind = Keyboard::NONE, bool enabled = false) :
         Module("Animations", "Render", "Change how you swing", keybind, enabled)
     {
-        registerEnumSetting("Animation", "Change your swing speed", { "1.7", "Slide", "Spin", "Exhi", "Lunaris", Game::Lunacia::ClientName.c_str() }, &mode);
+        registerEnumSetting("Animation", "Change your swing speed", { "1.7", "Slide", "Spin", "Exhi", "Lunaris", Game::Skiddle::ClientName.c_str() }, &mode);
         registerBoolSetting("Flux", "Change animations swing", &fluxswing);
         registerFloatSetting("Swing Speed", "Change your swing speed", &Game::Core::AnimationSwingSpeed, 1, 50);
 
@@ -98,7 +98,7 @@ public:
         auto pos = Game::GetInstance()->getLevelRender()->getOrigin();
         auto player = Game::GetLocalPlayer();
         
-        if (GetAsyncKeyState(VK_RBUTTON) && Game::GetInstance()->mcGame->canUseMoveKeys() || Game::Lunacia::ShouldBlock) // RenderUtil::GetCTX()->ClientInstance->mcGame->CanUseKeys
+        if (GetAsyncKeyState(VK_RBUTTON) && Game::GetInstance()->mcGame->canUseMoveKeys() || Game::Skiddle::ShouldBlock) // RenderUtil::GetCTX()->ClientInstance->mcGame->CanUseKeys
         {
             nopBytes((unsigned char*)fluxSwing, 6);
 

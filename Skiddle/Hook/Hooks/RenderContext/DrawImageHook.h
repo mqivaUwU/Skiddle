@@ -25,7 +25,7 @@ void DrawImageDetour(
         if (Game::FontRepos::GetClientFont() == nullptr)
             return;
 
-        std::string str(Game::Lunacia::ClientName);
+        std::string str(Game::Skiddle::ClientName);
 
         float strSize = 6;
         float width = RenderUtil::getTextWidth(&str, strSize);

@@ -2109,7 +2109,7 @@ void callRender() {
     event.cancelled = nullptr;
     DispatchEvent(&event);
 
-    if (Game::Lunacia::showNotification) {
+    if (Game::Skiddle::showNotification) {
         Notification::renderNotifications();
     }
 }

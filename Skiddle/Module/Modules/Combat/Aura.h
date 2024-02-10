@@ -96,7 +96,7 @@ public:
 
         if (!Game::TargetLists::auraList.empty())
         {
-            Game::Lunacia::ShouldBlock = true;
+            Game::Skiddle::ShouldBlock = true;
 
 
             switchSlot1();
@@ -121,7 +121,7 @@ public:
         }
         else
         {
-            Game::Lunacia::ShouldBlock = false;
+            Game::Skiddle::ShouldBlock = false;
         }
     }
 
@@ -167,7 +167,7 @@ public:
     void onDisabled()
     {
 
-        Game::Lunacia::ShouldBlock = false;
+        Game::Skiddle::ShouldBlock = false;
         Game::TargetLists::auraList.clear();
     }
 

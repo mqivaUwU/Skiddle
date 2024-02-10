@@ -24,7 +24,7 @@ namespace Game
 	class Skiddle
 	{
 	public:
-		static inline std::string ClientName = "Lunacia";
+		static inline std::string ClientName = "Skiddle";
 		static inline int ClientColor = 11;
 
 		static inline bool showNotification = false;

@@ -33,10 +33,10 @@ public:
 
 	void onEvent(UpdateEvent* event) {
 		if (mode) {
-			Game::Lunacia::showArrayMode = true;
+			Game::Skiddle::showArrayMode = true;
 		}
 		else {
-			Game::Lunacia::showArrayMode = false;
+			Game::Skiddle::showArrayMode = false;
 		}
 	}
 
@@ -195,7 +195,7 @@ private:
 			std::string nameA;
 			std::string nameB;
 
-			if (Game::Lunacia::showArrayMode) {
+			if (Game::Skiddle::showArrayMode) {
 				nameA = a->getName() + a->getModeName();
 				nameB = b->getName() + b->getModeName();
 			}

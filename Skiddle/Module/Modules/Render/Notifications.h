@@ -8,14 +8,14 @@ public:
 	{}
 
 	void onEnabled() {
-		Game::Lunacia::showNotification = true;
+		Game::Skiddle::showNotification = true;
 	}
 
 	void onEvent(UpdateEvent* event) {
-		Game::Lunacia::showNotification = true;
+		Game::Skiddle::showNotification = true;
 	}
 	
 	void onDisabled() {
-		Game::Lunacia::showNotification = false;
+		Game::Skiddle::showNotification = false;
 	}
 };

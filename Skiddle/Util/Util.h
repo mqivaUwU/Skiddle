@@ -19,7 +19,7 @@ public:
 
             freopen_s(&f, "CONOUT$", "w", stdout);
             freopen_s(&f, "CONIN$", "r", stdin);
-            std::string name = Game::Lunacia::ClientName + " - Debug";
+            std::string name = Game::Skiddle::ClientName + " - Debug";
             SetConsoleTitleA(name.c_str());
         }
         else
@@ -47,7 +47,7 @@ public:
 
     inline static std::string getClientPath()
     {
-        return getRoamingStatePath() + Game::Lunacia::ClientName + "\\";
+        return getRoamingStatePath() + Game::Skiddle::ClientName + "\\";
     }
 
     inline static bool doesClientPathExist(const std::string& path)

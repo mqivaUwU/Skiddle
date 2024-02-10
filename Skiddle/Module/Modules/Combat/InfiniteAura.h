@@ -46,7 +46,7 @@ public:
         getEntities(callback);
 
         if (!Game::TargetLists::infAuraList.empty()) {
-            Game::Lunacia::ShouldBlock = true;
+            Game::Skiddle::ShouldBlock = true;
             if (TimeUtil::hasTimeElapsed("tpDelay", 1000 / delayMS, true)) {
                 float calculatedYaw = (mProxy->getRotation().y + 90) * (PI / 180);
                 float calculatedPitch = (mProxy->getRotation().x) * -(PI / 180);
@@ -79,13 +79,13 @@ public:
             }
         }
         else {
-            Game::Lunacia::ShouldBlock = false;
+            Game::Skiddle::ShouldBlock = false;
         }
     }
 
     void onDisabled() override {
         Game::TargetLists::infAuraList.clear();
-        Game::Lunacia::ShouldBlock = false;
+        Game::Skiddle::ShouldBlock = false;
     }
 
     struct sortEntities {
