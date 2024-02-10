@@ -76,7 +76,7 @@ public:
         }
     
 
-        /// Watermark lol
+        /// Watermark
         if (watermark && Game::Core::showMenu) {
             logoPos = logoPos.animate(Vector2<float>(6.f, 6.f), logoPos, RenderUtil::getDeltaTime() * 10.f);
 
