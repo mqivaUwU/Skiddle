@@ -179,7 +179,7 @@ public:
      //   ImDrawList* list = ImGui::GetBackgroundDrawList();
      //   list->AddLine(start, end, ImColor(color.r, color.g, color.b, color.a), thickness);
   //  }
-    //TEST FOR FUTURE!
+    //TEST FOR FUTURE!!
 
     static inline float getTextWidth(std::string* textStr, float textSize) {
         return ImGui::GetFont()->CalcTextSizeA(textSize * 18, FLT_MAX, -1, textStr->c_str()).x;
