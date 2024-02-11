@@ -3,7 +3,6 @@
 class ImRenderUtil
 {
 public:
-
     inline static float getScale()
     {
         return std::min(GuiInfo::ScreenRes.x / GuiInfo::TrueScreenRes.x, GuiInfo::ScreenRes.y / GuiInfo::TrueScreenRes.y);
@@ -63,12 +62,12 @@ public:
             // drawText(Vector2<float>(pos.x, pos.y), &string, ColorUtil::getClientColor(speed, saturation, brightness, colorIndex), size, alpha, shadow);
             drawText(Vector2<float>(pos.x, pos.y), &string, ColorUtil::getClientColor(speed, saturation, brightness, colorIndex), size, alpha, shadow);
 
-
             // Increment the color and pos index
             pos.x += charWidth;
             ++ind;
         }
     }
+
     template <typename T>
     static void fillRectangle(Vector4<T> pos, const UIColor& color, float alpha, float radius = 0.f)
     {
@@ -77,8 +76,9 @@ public:
         ImDrawList* list = ImGui::GetBackgroundDrawList();
         list->AddRectFilled(ImVec2(pos.x, pos.y), ImVec2(pos.z, pos.w), ImColor(color.r, color.g, color.b, alpha), radius);
     }
+
     template <typename T>
-    static void fillRectangleCustom(Vector4<T> pos, const UIColor& color, float alpha, Vector4<float>radius) {
+    static void fillRectangleCustom(Vector4<T> pos, const UIColor& color, float alpha, Vector4<float> radius) {
         if (!ImGui::GetCurrentContext()) return;
 
         ImDrawList* list = ImGui::GetBackgroundDrawList();
@@ -90,7 +90,7 @@ public:
         if (!ImGui::GetCurrentContext()) return;
 
         ImDrawList* list = ImGui::GetBackgroundDrawList();
-        ImVec2 offset = ImVec2(0,0);
+        ImVec2 offset = ImVec2(0, 0);
         list->AddShadowRect(ImVec2(pos.x, pos.y), ImVec2(pos.z, pos.w), ImColor(color.r, color.g, color.b, alpha), thickness, offset, flags, radius);
     }
 
@@ -172,6 +172,15 @@ public:
         list->AddCircleFilled(center.ToImVec(), radius, ImColor(color.r, color.g, color.b, alpha), segments);
     }
 
+   // static void drawLine(const ImVec2& start, const ImVec2& end, const UIColor& color, float thickness)
+   // {
+     //   if (!ImGui::GetCurrentContext()) return;
+
+     //   ImDrawList* list = ImGui::GetBackgroundDrawList();
+     //   list->AddLine(start, end, ImColor(color.r, color.g, color.b, color.a), thickness);
+  //  }
+    //TEST FOR FUTURE!
+
     static inline float getTextWidth(std::string* textStr, float textSize) {
         return ImGui::GetFont()->CalcTextSizeA(textSize * 18, FLT_MAX, -1, textStr->c_str()).x;
     }
@@ -196,7 +205,7 @@ public:
 
     static inline Vector2<float> getScreenSize() {
         if (!Game::GetInstance()->getGuiData()) {
-            return {0, 0};
+            return { 0, 0 };
         }
         return Game::GetInstance()->getGuiData()->WindowResolution2;
     }
