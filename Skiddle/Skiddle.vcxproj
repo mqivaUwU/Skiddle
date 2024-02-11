@@ -57,6 +57,13 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
+      <Optimization>Custom</Optimization>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <OmitFramePointers>false</OmitFramePointers>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
