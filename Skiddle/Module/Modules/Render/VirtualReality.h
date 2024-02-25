@@ -4,7 +4,7 @@ class VirtualReality : public Module
 {
 public:
     VirtualReality(int keybind = Keyboard::NONE, bool enabled = false) :
-        Module("ViewBobbing", "Visual", "Change your view bobbing (Requires ViewBobbing to be enabled.)", keybind, enabled)
+        Module("VirtualReality", "Render", "Change your view bobbing (Requires ViewBobbing to be enabled.)", keybind, enabled)
     {
         registerEnumSetting("Mode", "", { "Normal", "Meme", "None" }, &mode);
         registerFloatSetting("Amount", "", &viewBobAmount, -1, 1);
