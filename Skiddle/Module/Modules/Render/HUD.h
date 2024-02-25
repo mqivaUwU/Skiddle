@@ -88,12 +88,12 @@ public:
             ColorUtil::setClientCustomWaveColor(230, 0, 0);
             ColorUtil::setClientCustomWaveColor2(230, 0, 0);
             break;
-        case 10: // Zipppo
+        case 9: // Zipppo
             ColorUtil::setClientColorType(1);
             ColorUtil::setClientCustomWaveColor(253, 223, 231);
             ColorUtil::setClientCustomWaveColor2(253, 223, 231);
             break;
-        case 11: // Suggestion
+        case 10: // Suggestion
             ColorUtil::setClientColorType(1);
             ColorUtil::setClientCustomWaveColor(150, 45, 255);
             ColorUtil::setClientCustomWaveColor2(150, 45, 255);
