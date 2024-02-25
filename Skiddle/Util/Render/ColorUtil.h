@@ -146,7 +146,7 @@ public:
 			};
 			return getCustomColors(seconds, index, colorMap);
 			break;
-		case 2: // Weather colors, sorta
+		case 2: // Weather colors
 			colorMap =
 			{
 				{0.0f, UIColor(255, 255, 255)},
@@ -157,7 +157,7 @@ public:
 			};
 			return getCustomColors(seconds, index, colorMap);
 			break;
-		case 3: // Bubblegum idk
+		case 3: // Bubblegum
 			colorMap = 
 			{
 				{0.0f, UIColor(255, 192, 203)},
