@@ -16,7 +16,7 @@ public:
     bool watermark = true;
     bool showFPS = true; // New variable to control FPS text visibility
     bool showBPS = true; // New variable to control BPS text visibility
-    float scale = 2.6f;
+    float scale = 2.5f;
 
     HUD(int keybind = Keyboard::NONE, bool enabled = true) :
         Module("HUD", "Render", "Display info on the screen", keybind, enabled)
