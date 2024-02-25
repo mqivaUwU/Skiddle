@@ -6,8 +6,8 @@ public:
     VirtualReality(int keybind = Keyboard::NONE, bool enabled = false) :
         Module("VirtualReality", "Render", "Change your view bobbing (Requires ViewBobbing to be enabled.)", keybind, enabled)
     {
-        registerEnumSetting("Mode", "", { "Normal", "Meme", "None" }, &mode);
-        registerFloatSetting("Amount", "", &viewBobAmount, -1, 1);
+        //registerEnumSetting("Mode", "", { "Meme" }, &mode);
+        registerFloatSetting("Test", "", &viewBobAmount, -1, 1);
     }
 
     float viewBobAmount = 0.3;
@@ -20,13 +20,8 @@ public:
 
         switch (mode)
         {
-        case 0:
-            break;
-        case 1:
+        case 0: // Meme mode
             Game::GetLocalPlayer()->getMovementProxy()->setBob(viewBobAmount);
-            break;
-        case 2:
-            Game::GetLocalPlayer()->getMovementProxy()->setBob(0);
             break;
         }
     }
