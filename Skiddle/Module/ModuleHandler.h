@@ -22,6 +22,7 @@
 #include "Modules/Render/Trail.h"
 #include "Modules/Render/ESP.h"
 #include "Modules/Render/Watermark.h"
+#include "Modules/Render/VirtualReality.h"
 
 // Movement
 #include "Modules/Movement/FastStop.h"
@@ -80,6 +81,7 @@ void InitializeModules()
 	modules.push_back(new Trail(Keyboard::NONE));
 	modules.push_back(new ESP(Keyboard::NONE));
 	modules.push_back(new Watermark(Keyboard::NONE));
+	modules.push_back(new VirtualReality(Keyboard::NONE));
 
 	// Movement
 	modules.push_back(new FastStop(Keyboard::NONE));
