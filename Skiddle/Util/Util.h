@@ -385,17 +385,4 @@ public:
 
 private:
     static inline FILE* f;
-
-    /*std::ifstream infile(getClientPath() + "input.txt");
-        std::ofstream outfile(getClientPath() + "output.txt");
-        std::string line;
-        int count = 0;
-        while (std::getline(infile, line)) {
-            for (int i = 0; i < line.length(); i += 2000) {
-                std::string substr = line.substr(i, 2000);
-                outfile.write(substr.c_str(), substr.length());
-                outfile << "\" + (std::string) \"";
-                count += substr.length();
-            }
-        }*/
 };
