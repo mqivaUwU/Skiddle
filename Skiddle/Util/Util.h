@@ -175,7 +175,7 @@ public:
         // Write Text
         writeText(getClientPath() + "Assets\\Custom\\Insults.txt", "//Write your Killsults here (comment lines will be ignored)");
 
-        downloadFile("MenuBackground.png", "https://cdn.discordapp.com/attachments/1163476805727031377/1169287230741819402/MenuBackground.png", "Assets\\Images\\");
+        downloadFile("MenuBackground.png", "https://cdn.discordapp.com/attachments/1211320340785930321/1211320367377948712/Astheric.png?ex=65edc500&is=65db5000&hm=3d4e3be5a94d4394a2c855df76d7f539230795996cf072aa524c40304f0b95c6&", "Assets\\Images\\");
         downloadFile("ClickGUIBackground.png", "https://cdn.discordapp.com/attachments/1163476805727031377/1165247419492077648/clickgui-overlay.png", "Assets\\Images\\");
 
         // Client
