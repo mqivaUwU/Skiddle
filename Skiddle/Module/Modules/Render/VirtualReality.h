@@ -7,7 +7,7 @@ public:
         Module("VirtualReality", "Render", "Change your view bobbing (Requires ViewBobbing to be enabled.)", keybind, enabled)
     {
         //registerEnumSetting("Mode", "", { "Meme" }, &mode);
-        registerFloatSetting("Test", "", &viewBobAmount, -1, 1);
+        //registerFloatSetting("Test", "", &viewBobAmount, -1, 1);
     }
 
     float viewBobAmount = 0.3;
