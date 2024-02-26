@@ -10,8 +10,7 @@ public:
         registerFloatSetting("Range", "The distance of attacking", &range, 3, 10);
         registerBoolSetting("Rotations", "Rotate Serversidedly", &rotations);
 
-        // Keep the type of autowepon as float
-        registerFloatSetting("AutoWepon", "Enable auto-switching hotbar slot", &autowepon, 0, 1);
+        registerBoolSetting("AutoWepon", "Enable auto-switching hotbar slot", &autowepon);
 
         registerFloatSetting("Min APS", "How many times you attack in a second", &minAPS, 1, 30);
         registerFloatSetting("Max APS", "How many times you attack in a second", &maxAPS, 1, 30);
@@ -67,7 +66,7 @@ public:
         return false;
     }
 
-    float autowepon = 0;  // Keep the type as float
+    bool autowepon = false;
 
     float range = 4;
     float minAPS = 10;
