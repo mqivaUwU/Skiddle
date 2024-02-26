@@ -1,8 +1,7 @@
-
 #pragma once
 #include "../../../Util/Time/TimeUtil.h"
 
-class Disabler : public Module // this wont be fun to keep clean
+class Disabler : public Module
 {
 public:
     Disabler(int keybind = Keyboard::NONE, bool enabled = false) :
@@ -16,7 +15,8 @@ public:
     int disablerMode = 0;
     float ctm = 1;
 
-    void onEvent(UpdateEvent* event) {
+    void onEvent(UpdateEvent* event) override
+    {
         auto player = Game::GetLocalPlayer();
         if (player == nullptr) return;
 
@@ -53,68 +53,24 @@ public:
                 packet->tick == 1;
             }
             break;
-        case 1: // Sentinel
-            if (pkt->instanceOf<NetworkStackLatencyPacket>())
-            {
-                *event->cancelled = true;
-            }
-            if (pkt->instanceOf<PlayerAuthInputPacket>()) {
-                MovePlayerPacket pkt(Game::GetLocalPlayer(), Game::GetLocalPlayer()->getPosition(), Game::GetLocalPlayer()->getMovementProxy()->getRotation(), Game::GetLocalPlayer()->getMovementProxy()->isOnGround());
-                for (int i = 0; i < 4; i++) {
-                    Game::GetInstance()->getPacketSender()->sendToServer(&pkt);
-                    *event->cancelled = false;
-                }
-            }
-            break;
+            // No need for case 1 (Sentinel) anymore
         }
     }
 
     void onEvent(UpdateTickEvent* event) override
     {
-        ClientInstance* instance = Game::GetInstance();
-        LoopbackPacketSender* sender = instance->getPacketSender();
-
-        if (!sender || !instance || !Game::GetLocalPlayer())
-        {
-            return;
-        }
-
-
         auto player = Game::GetLocalPlayer();
         if (player == nullptr) return;
 
-
         switch (disablerMode)
         {
-        case 1: // Sentinel
-            if (TimeUtil::hasTimeElapsed("gmTick", 50, true))
-            {
-
-            }
-
-            // Sleep and skips
-            if (player->getMovementProxy()->isOnGround()) {
-                Sleep(1.5);
-            }
-            else {
-                static auto lastTime = std::chrono::high_resolution_clock::now();
-                auto currentTime = std::chrono::high_resolution_clock::now();
-                if (std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastTime).count() < 5.f) {
-                    Game::Skiddle::skipTicks = true;
-                }
-                else {
-                    Game::Skiddle::skipTicks = false;
-                    lastTime = std::chrono::high_resolution_clock::now();
-                }
-            }
-            break;
+            // No need for case 1 (Sentinel) anymore
         case 2: // Flareon
             if (Game::GetInstance()->mcGame->canUseMoveKeys()) {
                 MovePlayerPacket packet = MovePlayerPacket(Game::GetLocalPlayer(), Game::GetLocalPlayer()->getPosition(), Game::GetLocalPlayer()->getMovementProxy()->getRotation(), Game::GetLocalPlayer()->getMovementProxy()->isOnGround());
                 packet.mode == 2;
                 packet.onGround = true;
                 packet.tick = rand() % 1000000 + 1000985;
-                // packet.tick = rand() % 4000000 + 4000985;
 
                 for (int i = 0; i < 2; i++)
                 {
@@ -125,11 +81,8 @@ public:
         }
     }
 
-    void onDisabled() {
-        switch (disablerMode) {
-        case 1: // Sentinel
-            Game::Skiddle::skipTicks = false;
-            break;
-        }
+    void onDisabled() override
+    {
+        // No need for case 1 (Sentinel) anymore
     }
 };
