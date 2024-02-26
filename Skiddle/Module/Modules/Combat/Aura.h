@@ -180,6 +180,7 @@ public:
         angles.x = asinf(diff.y) * -DEG_RAD;
         angles.y = (float)-atan2f(diff.x, diff.z) * DEG_RAD;
 
+        // Set yaw and pitch directly without interpolation
         return angles;
     }
 
