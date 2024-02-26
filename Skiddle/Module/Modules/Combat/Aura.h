@@ -8,7 +8,7 @@ public:
     {
         registerEnumSetting("Mode", "How many entities should be attacked", { "Single", "Multi" }, &switchMode);
         registerFloatSetting("Range", "The distance of attacking", &range, 3, 10);
-        registerBoolSetting("Rotations", "Rotatew Serversidedly", &rotations);
+        registerBoolSetting("Rotations", "Rotate Serversidedly", &rotations);
 
         registerFloatSetting("Min APS", "How many times you attack in a second", &minAPS, 1, 30);
         registerFloatSetting("Max APS", "How many times you attack in a second", &maxAPS, 1, 30);
@@ -41,9 +41,8 @@ public:
         }
     }
 
-
-    // Slots
-    bool switchSlot1() {
+    bool switchSlot1()
+    {
         auto supplies = Game::GetLocalPlayer()->getSupplies();
         auto inv = supplies->inventory;
         auto prevSlot = supplies->hotbarSlot;
@@ -69,7 +68,8 @@ public:
     float maxAPS = 10;
     bool rotations = true;
 
-    inline float RandomFloat(float a, float b) {
+    inline float RandomFloat(float a, float b)
+    {
         float random = ((float)rand()) / (float)RAND_MAX;
         float diff = b - a;
         float r = random * diff;
@@ -93,27 +93,23 @@ public:
         if (!gm)
             return;
 
-
         if (!Game::TargetLists::auraList.empty())
         {
             Game::Skiddle::ShouldBlock = true;
 
-
             switchSlot1();
 
-            if (TimeUtil::hasTimeElapsed("kaTimer", 1000 / RandomFloat(minAPS, maxAPS), true))
+            if (switchMode == 0 && TimeUtil::hasTimeElapsed("kaTimer", 1000 / RandomFloat(minAPS, maxAPS), true))
             {
-                switch (switchMode)
+                gm->attack(Game::TargetLists::auraList[0]);
+                Game::cpsCount++;
+                player->swing();
+            }
+            else if (switchMode == 1 && TimeUtil::hasTimeElapsed("kaTimer", 1000 / RandomFloat(minAPS, maxAPS), true))
+            {
+                for (auto e : Game::TargetLists::auraList)
                 {
-                case 0: // Single
-                    gm->attack(Game::TargetLists::auraList[0]);
-                    break;
-                case 1: // Multi
-                    for (auto e : Game::TargetLists::auraList)
-                    {
-                        gm->attack(e);
-                    }
-                    break;
+                    gm->attack(e);
                 }
                 Game::cpsCount++;
                 player->swing();
@@ -154,7 +150,7 @@ public:
             Vector2 angle = CalcAngle(Game::GetLocalPlayer()->GetPosition(), Game::TargetLists::auraList[0]->GetPosition());
 
             pkt->yaw = angle.y;
-            pkt->headYaw = angle.y; // i removed it
+            pkt->headYaw = angle.y;
             pkt->pitch = angle.x;
         }
     }
@@ -166,7 +162,6 @@ public:
 
     void onDisabled()
     {
-
         Game::Skiddle::ShouldBlock = false;
         Game::TargetLists::auraList.clear();
     }
