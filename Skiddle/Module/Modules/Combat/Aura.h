@@ -6,10 +6,12 @@ public:
     Aura(int keybind = Keyboard::NONE, bool enabled = false) :
         Module("Aura", "Combat", "Hit entities around you", keybind, enabled)
     {
-        registerEnumSetting("Mode", "How many entities should be attacked", { "Single", "Multi" }, &autowepon);
+        registerEnumSetting("Mode", "How many entities should be attacked", { "Single", "Multi" }, &attackMode);
         registerFloatSetting("Range", "The distance of attacking", &range, 3, 10);
         registerBoolSetting("Rotations", "Rotate Serversidedly", &rotations);
-        registerIntSetting("AutoWepon", "Enable auto-switching hotbar slot", &autowepon, 0, 1);
+
+        // Keep the type of autowepon as float
+        registerFloatSetting("AutoWepon", "Enable auto-switching hotbar slot", &autowepon, 0, 1);
 
         registerFloatSetting("Min APS", "How many times you attack in a second", &minAPS, 1, 30);
         registerFloatSetting("Max APS", "How many times you attack in a second", &maxAPS, 1, 30);
@@ -65,7 +67,7 @@ public:
         return false;
     }
 
-    int autowepon = 0;
+    float autowepon = 0;  // Keep the type as float
 
     float range = 4;
     float minAPS = 10;
@@ -126,7 +128,7 @@ public:
     }
 
     void onEvent(PacketSendingEvent* event) override
-   {
+    {
         auto player = Game::GetLocalPlayer();
         if (!player)
         {
@@ -181,4 +183,7 @@ public:
 
         return angles;
     }
+
+private:
+    int attackMode = 0;  // Use this variable for the selected attack mode (0 for Single, 1 for Multi)
 };
