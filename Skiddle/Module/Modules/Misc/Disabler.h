@@ -1,3 +1,8 @@
+#include <chrono>
+#include <thread>
+#include <cstdlib> // for rand() and srand()
+#include <ctime>   // for srand() seed
+
 #pragma once
 #include "../../../Util/Time/TimeUtil.h"
 
@@ -10,6 +15,7 @@ public:
         registerEnumSetting("Mode", "The mode of which the disabler will work", { "GroundSpoof", "Sentinel" }, &disablerMode);
         registerFloatSetting("CombatTick", "Attack speed", &ctm, 0, 50);
         IngameOnly();
+        srand(time(nullptr)); // Seed srand() for random number generation
     }
 
     int disablerMode = 0;
@@ -28,13 +34,23 @@ public:
                 player->getMovementProxy()->setSpeed(0.0f);
                 player->getMovementProxy()->setJumping(false);
 
-                // Continuously send fake movement packets to confuse the server
+                // Introduce random delays and randomize packet parameters
                 for (int i = 0; i < 5; i++) {
-                    MovePlayerPacket packet = MovePlayerPacket(player, player->getPosition(), player->getMovementProxy()->getRotation(), player->getMovementProxy()->isOnGround());
-                    packet.mode == 2;
-                    packet.onGround = true;
-                    packet.tick = rand() % 1000000 + 1000985;
+                    // Generate random parameters
+                    float randX = generateRandomFloat(-100.0f, 100.0f);
+                    float randY = generateRandomFloat(-100.0f, 100.0f);
+                    float randZ = generateRandomFloat(-100.0f, 100.0f);
+                    float randYaw = generateRandomFloat(0.0f, 360.0f);
+                    float randPitch = generateRandomFloat(-90.0f, 90.0f);
+
+                    // Create and send fake movement packets with randomized parameters
+                    MovePlayerPacket packet = MovePlayerPacket(player, player->getPosition() + Vector3(randX, randY, randZ), Vector2(randYaw, randPitch), true);
+                    packet.mode == 2; // Assuming mode should be set with '=' instead of '=='
+                    packet.tick == generateRandomInt(1000000, 2000000); // Random tick value
                     Game::GetInstance()->getPacketSender()->sendToServer(&packet);
+
+                    // Introduce random delay between packet sends
+                    std::this_thread::sleep_for(std::chrono::milliseconds(generateRandomInt(50, 200)));
                 }
             }
             break;
@@ -83,5 +99,15 @@ public:
     void onDisabled() override
     {
         // Cleanup or additional actions when the module is disabled
+    }
+
+private:
+    // Helper functions for generating random numbers
+    float generateRandomFloat(float min, float max) {
+        return min + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (max - min)));
+    }
+
+    int generateRandomInt(int min, int max) {
+        return min + (rand() % (max - min + 1));
     }
 };
