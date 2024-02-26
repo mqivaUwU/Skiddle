@@ -53,7 +53,7 @@ public:
                 packet->tick == 1;
             }
             break;
-            // No need for case 1 (Sentinel) anymore
+            // case 1 Sentinel here
         }
     }
 
@@ -64,7 +64,9 @@ public:
 
         switch (disablerMode)
         {
-            // No need for case 1 (Sentinel) anymore
+            // case 1 Sentinel here
+
+
         case 2: // Flareon
             if (Game::GetInstance()->mcGame->canUseMoveKeys()) {
                 MovePlayerPacket packet = MovePlayerPacket(Game::GetLocalPlayer(), Game::GetLocalPlayer()->getPosition(), Game::GetLocalPlayer()->getMovementProxy()->getRotation(), Game::GetLocalPlayer()->getMovementProxy()->isOnGround());
@@ -83,6 +85,6 @@ public:
 
     void onDisabled() override
     {
-        // No need for case 1 (Sentinel) anymore
+        // case 1 Sentinel here
     }
 };
