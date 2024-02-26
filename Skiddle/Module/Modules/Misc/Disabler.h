@@ -7,7 +7,7 @@ public:
     Disabler(int keybind = Keyboard::NONE, bool enabled = false) :
         Module("Disabler", "Misc", "Basic version of an anticheat disabler", keybind, enabled)
     {
-        registerEnumSetting("Mode", "The mode of which the disabler will work", { "OnGround", "Sentinel", "Flareon" }, &disablerMode);
+        registerEnumSetting("Mode", "The mode of which the disabler will work", { "GroundSpoof", "Sentinel" }, &disablerMode);
         registerFloatSetting("CombatTick", "Attack speed", &ctm, 1, 50);
         IngameOnly();
     }
@@ -22,7 +22,7 @@ public:
 
         switch (disablerMode)
         {
-        case 2: // Flareon
+        case 1: // Sentinile
             GameMode * gm = player->getGameMode();
 
             if (TimeUtil::hasTimeElapsed("CTM", (1000 / ctm), true))
@@ -39,7 +39,7 @@ public:
 
         switch (disablerMode)
         {
-        case 0: // OnGround
+        case 0: // GroundSpoof
             if (pkt->instanceOf<MovePlayerPacket>())
             {
                 MovePlayerPacket* packet = reinterpret_cast<MovePlayerPacket*>(pkt);
@@ -53,7 +53,7 @@ public:
                 packet->tick == 1;
             }
             break;
-            // case 1 Sentinel here
+            // Flareon here
         }
     }
 
@@ -64,10 +64,10 @@ public:
 
         switch (disablerMode)
         {
-            // case 1 Sentinel here
+            // Flareon here
 
 
-        case 2: // Flareon
+        case 1: // Sentinile
             if (Game::GetInstance()->mcGame->canUseMoveKeys()) {
                 MovePlayerPacket packet = MovePlayerPacket(Game::GetLocalPlayer(), Game::GetLocalPlayer()->getPosition(), Game::GetLocalPlayer()->getMovementProxy()->getRotation(), Game::GetLocalPlayer()->getMovementProxy()->isOnGround());
                 packet.mode == 2;
@@ -85,6 +85,6 @@ public:
 
     void onDisabled() override
     {
-        // case 1 Sentinel here
+        // Flareon here
     }
 };
