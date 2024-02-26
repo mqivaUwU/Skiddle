@@ -453,7 +453,7 @@ public:
 #pragma endregion
                 ImRenderUtil::drawRoundRect(catWindow.scale(-1), ImDrawFlags_RoundCornersMask_, 4, UIColor(35, 35, 35), animation, 2.f); Vector2 mousePos(ImRenderUtil::getMousePos());
             }
-            /*
+            
             if (!tooltip.empty()) {
                 float textWidth = ImRenderUtil::getTextWidth(&tooltip, textSize * 0.8f);
                 float textHeight = ImRenderUtil::getTextHeight(textSize * 0.8f);
@@ -477,7 +477,7 @@ public:
                 ImRenderUtil::drawText(Vector2(tooltipRect.x + padding, tooltipRect.y + padding), &tooltip, UIColor(255, 255, 255), textSize * 0.8f, animation, false);
                 // ImRenderUtil::drawText(Vector2(tooltipRect.x + padding, tooltipRect.y + padding), &tooltip, UIColor(255, 255, 255), textSize * 0.8f, animation, true);
             }
-            */
+            
             if (isEnabled) {
                 Util::leftDown = false;
                 Util::rightDown = false;
