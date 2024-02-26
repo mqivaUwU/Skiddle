@@ -6,9 +6,10 @@ public:
     Aura(int keybind = Keyboard::NONE, bool enabled = false) :
         Module("Aura", "Combat", "Hit entities around you", keybind, enabled)
     {
-        registerEnumSetting("Mode", "How many entities should be attacked", { "Single", "Multi" }, &switchMode);
+        registerEnumSetting("Mode", "How many entities should be attacked", { "Single", "Multi" }, &autowepon);
         registerFloatSetting("Range", "The distance of attacking", &range, 3, 10);
         registerBoolSetting("Rotations", "Rotate Serversidedly", &rotations);
+        registerIntSetting("AutoWepon", "Enable auto-switching hotbar slot", &autowepon, 0, 1);
 
         registerFloatSetting("Min APS", "How many times you attack in a second", &minAPS, 1, 30);
         registerFloatSetting("Max APS", "How many times you attack in a second", &maxAPS, 1, 30);
@@ -41,27 +42,30 @@ public:
         }
     }
 
-    bool switchSlot1()
+    bool Autowepon()
     {
         auto supplies = Game::GetLocalPlayer()->getSupplies();
         auto inv = supplies->inventory;
         auto prevSlot = supplies->hotbarSlot;
 
-        for (int n = 0; n < 9; n++) {
-            ItemStack* stack = inv->getItem(n);
-            Item* it = stack->item;
-            if (stack->item) {
-                if (prevSlot != n) {
-                    supplies->hotbarSlot = n;
+        // Check if autowepon is enabled
+        if (autowepon > 0) {
+            for (int n = 0; n < 9; n++) {
+                ItemStack* stack = inv->getItem(n);
+                Item* it = stack->item;
+                if (stack->item) {
+                    if (prevSlot != n) {
+                        supplies->hotbarSlot = n;
+                    };
+                    return true;
                 };
-                return true;
             };
-        };
+        }
 
         return false;
     }
 
-    int switchMode = 0;
+    int autowepon = 0;
 
     float range = 4;
     float minAPS = 10;
@@ -97,15 +101,15 @@ public:
         {
             Game::Skiddle::ShouldBlock = true;
 
-            switchSlot1();
+            Autowepon();
 
-            if (switchMode == 0 && TimeUtil::hasTimeElapsed("kaTimer", 1000 / RandomFloat(minAPS, maxAPS), true))
+            if (autowepon == 0 && TimeUtil::hasTimeElapsed("kaTimer", 1000 / RandomFloat(minAPS, maxAPS), true))
             {
                 gm->attack(Game::TargetLists::auraList[0]);
                 Game::cpsCount++;
                 player->swing();
             }
-            else if (switchMode == 1 && TimeUtil::hasTimeElapsed("kaTimer", 1000 / RandomFloat(minAPS, maxAPS), true))
+            else if (autowepon == 1 && TimeUtil::hasTimeElapsed("kaTimer", 1000 / RandomFloat(minAPS, maxAPS), true))
             {
                 for (auto e : Game::TargetLists::auraList)
                 {
@@ -122,7 +126,7 @@ public:
     }
 
     void onEvent(PacketSendingEvent* event) override
-    {
+   {
         auto player = Game::GetLocalPlayer();
         if (!player)
         {
@@ -155,12 +159,12 @@ public:
         }
     }
 
-    void onEnabled()
+    void onEnabled() override
     {
         Game::TargetLists::auraList.clear();
     }
 
-    void onDisabled()
+    void onDisabled() override
     {
         Game::Skiddle::ShouldBlock = false;
         Game::TargetLists::auraList.clear();
