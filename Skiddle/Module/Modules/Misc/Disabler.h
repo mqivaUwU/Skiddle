@@ -22,13 +22,23 @@ public:
 
         switch (disablerMode)
         {
-        case 1: // Sentinile
-            GameMode * gm = player->getGameMode();
+        case 1: // Sentinel
+            if (Game::GetInstance()->mcGame->canUseMoveKeys()) {
+                // Disable player movement
+                player->getMovementProxy()->setSpeed(0.0f);
+                player->getMovementProxy()->setJumping(false);
 
-            if (TimeUtil::hasTimeElapsed("CTM", (1000 / ctm), true))
-            {
-                gm->attack(gm->LocalPlayer);
+                // Continuously send fake movement packets to confuse the server
+                for (int i = 0; i < 5; i++) {
+                    MovePlayerPacket packet = MovePlayerPacket(player, player->getPosition(), player->getMovementProxy()->getRotation(), player->getMovementProxy()->isOnGround());
+                    packet.mode == 2;
+                    packet.onGround = true;
+                    packet.tick = rand() % 1000000 + 1000985;
+                    Game::GetInstance()->getPacketSender()->sendToServer(&packet);
+                }
             }
+            break;
+        default:
             break;
         }
     }
@@ -53,7 +63,8 @@ public:
                 packet->tick == 1;
             }
             break;
-            // Flareon here
+        default:
+            break;
         }
     }
 
@@ -64,27 +75,13 @@ public:
 
         switch (disablerMode)
         {
-            // Flareon here
-
-
-        case 1: // Sentinile
-            if (Game::GetInstance()->mcGame->canUseMoveKeys()) {
-                MovePlayerPacket packet = MovePlayerPacket(Game::GetLocalPlayer(), Game::GetLocalPlayer()->getPosition(), Game::GetLocalPlayer()->getMovementProxy()->getRotation(), Game::GetLocalPlayer()->getMovementProxy()->isOnGround());
-                packet.mode == 2;
-                packet.onGround = true;
-                packet.tick = rand() % 1000000 + 1000985;
-
-                for (int i = 0; i < 2; i++)
-                {
-                    Game::GetInstance()->getPacketSender()->sendToServer(&packet);
-                }
-            }
+        default:
             break;
         }
     }
 
     void onDisabled() override
     {
-        // Flareon here
+        // Cleanup or additional actions when the module is disabled
     }
 };
