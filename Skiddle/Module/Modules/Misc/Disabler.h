@@ -8,7 +8,7 @@ public:
         Module("Disabler", "Misc", "Basic version of an anticheat disabler", keybind, enabled)
     {
         registerEnumSetting("Mode", "The mode of which the disabler will work", { "GroundSpoof", "Sentinel" }, &disablerMode);
-        registerFloatSetting("CombatTick", "Attack speed", &ctm, 1, 50);
+        registerFloatSetting("CombatTick", "Attack speed", &ctm, 0, 50);
         IngameOnly();
     }
 
