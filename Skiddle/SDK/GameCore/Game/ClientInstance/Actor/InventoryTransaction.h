@@ -93,7 +93,7 @@ private:
 public:
 	void addInventoryAction(InventoryAction const& action, bool idk = false) {
 		using InventoryTransactionManager__addAction_t = void(__fastcall*)(InventoryTransactionManager*, InventoryAction const&, bool);
-		static auto InventoryTransactionManager__addAction = reinterpret_cast<InventoryTransactionManager__addAction_t>(findSig("48 89 5c 24 ? 55 56 57 41 56 41 57 48 83 ec ? 45 0f b6 f8 4c 8b f2 48 8b f1 48 8b 01 48 8b 88"));
+		static auto InventoryTransactionManager__addAction = reinterpret_cast<InventoryTransactionManager__addAction_t>(findSig("48 89 5c 24 ? 55 56 57 41 56 41 57 48 83 ec ? 45 0f b6 f8 4c 8b f2 48 8b f1 48 8b 01 48 8b 88")); //1.20.51
 		if (InventoryTransactionManager__addAction) {
 			InventoryTransactionManager__addAction(this, action, idk);
 		}
