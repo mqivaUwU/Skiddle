@@ -48,6 +48,7 @@ void SetupAndRenderDetour(
         constexpr float finalZoom = 2;
         static float zoom = 0, opacity = 0;
         zoom = Math::lerp(20, finalZoom, anim), opacity = Math::lerp(0, 1, anim);
+
         Vector2<float> size = Vector2<float>(screenRes.z * zoom, screenRes.w * zoom);
 
         // Lerp our mouse pos for smooth effect
@@ -64,54 +65,9 @@ void SetupAndRenderDetour(
         // Final rect area
         Vector4<float> rect = Vector4<float>(rectPosition.x, rectPosition.y, rectPosition.x + size.x, rectPosition.y + size.y);
 
-        if (Game::Core::showMenuBackground) {
-            RenderUtil::renderImage(Util::getClientPath() + xorstr_("Assets\\Images\\MenuBackground.png"), rect);
-            RenderUtil::flushImage(UIColor(255, 255, 255), opacity);
-        }
-    }
-
-    if (Game::Core::showAntiPiracyScreen1)
-    {
-        anim = Math::animate(1, anim, RenderUtil::getDeltaTime() * 10);
-        Vector4<float> screenRes = Vector4<float>(0, 0, GuiInfo::ScreenRes.x, GuiInfo::ScreenRes.y);
-        constexpr float finalZoom = 2;
-        static float zoom = 0, opacity = 0;
-        zoom = Math::lerp(20, finalZoom, anim), opacity = Math::lerp(0, 1, anim);
-        Vector2<float> size = Vector2<float>(screenRes.z * zoom, screenRes.w * zoom);
-        static float x = GuiInfo::MousePos.x, y = GuiInfo::MousePos.y;
-        x = Math::animate(324, x, RenderUtil::getDeltaTime() * 8);
-        y = Math::animate(168, y, RenderUtil::getDeltaTime() * 8);
-        Vector2<float> mousePos = Vector2<float>(x, y);
-        Vector2<float> rectCenter = Vector2<float>(screenRes.z / 0.5, screenRes.w / 0.5);
-        Vector2<float> offset = mousePos - rectCenter;
-        Vector2<float> rectPosition = rectCenter - offset - Vector2<float>(size.x / 0.5, size.y / 0.5);
-        Vector4<float> rect = Vector4<float>(rectPosition.x, rectPosition.y, rectPosition.x + size.x, rectPosition.y + size.y);
-
-        RenderUtil::renderImage(Util::getClientPath() + xorstr_("Assets\\Images\\AntiPiracyScreen.png"), rect);
+        RenderUtil::renderImage(Util::getClientPath() + xorstr_("Assets\\mainMenuBackground.png"), rect);
         RenderUtil::flushImage(UIColor(255, 255, 255), opacity);
     }
-    /*
-    if (Game::Core::showAntiPiracyScreen1)
-    {
-        anim = Math::animate(1, anim, RenderUtil::getDeltaTime() * 10);
-        Vector4<float> screenRes = Vector4<float>(0, 0, GuiInfo::ScreenRes.x, GuiInfo::ScreenRes.y);
-        constexpr float finalZoom = 2;
-        static float zoom = 0, opacity = 0;
-        zoom = Math::lerp(20, finalZoom, anim), opacity = Math::lerp(0, 1, anim);
-        Vector2<float> size = Vector2<float>(screenRes.z * zoom, screenRes.w * zoom);
-        static float x = GuiInfo::MousePos.x, y = GuiInfo::MousePos.y;
-        x = Math::animate(GuiInfo::MousePos.x, x, RenderUtil::getDeltaTime() * 8);
-        y = Math::animate(GuiInfo::MousePos.y, y, RenderUtil::getDeltaTime() * 8);
-        Vector2<float> mousePos = Vector2<float>(x, y);
-        Vector2<float> rectCenter = Vector2<float>(screenRes.z / 0.5, screenRes.w / 0.5);
-        Vector2<float> offset = mousePos - rectCenter;
-        Vector2<float> rectPosition = rectCenter - offset - Vector2<float>(size.x / 0.5, size.y / 0.5);
-        Vector4<float> rect = Vector4<float>(rectPosition.x, rectPosition.y, rectPosition.x + size.x, rectPosition.y + size.y);
-
-        RenderUtil::renderImage(Util::getClientPath() + xorstr_("Assets\\Images\\AntiPiracyScreen.png"), rect);
-        RenderUtil::flushImage(UIColor(255, 255, 255), opacity);
-    }*/
-
 
     LayerUpdateEvent event{ screenView };
     event.cancelled = nullptr;
@@ -229,7 +185,8 @@ class RenderContextHook : public FuncHook
 public:
     bool Initialize() override
     {
-        void* renderAddr = findSig("48 8B C4 48 89 58 ? 55 56 57 41 54 41 55 41 56 41 57 48 8D A8 ? ? ? ? 48 81 EC ? ? ? ? 0F 29 ? B8 0F 29 ? A8 48 8B 05 ? ? ? ? 48 33 C4 48 89 85 ? ? ? ? 4C 8B F2 48 89 54 24 ? 4C");
+        void* renderAddr = findSig("48 8B C4 48 89 58 ? 55 56 57 41 54 41 55 41 56 41 57 48 8D A8 ? ? ? ? 48 81 EC ? ? ? ? 0F 29 70 ? 0F 29 78 ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 85 ? ? ? ? 4C 8B ? 48 89 54 24 ? 4C"); // Updated to 1.20.51
+        // 48 8B C4 48 89 58 ? 55 56 57 41 54 41 55 41 56 41 57 48 8D A8 ? ? ? ? 48 81 EC ? ? ? ? 0F 29 ? B8 0F 29 ? A8 48 8B 05 ? ? ? ? 48 33 C4 48 89 85 ? ? ? ? 4C 8B F2 48 89 54 24 ? 4C in 1.20.0.1
         void* uisceneTickAddr = findSig("48 89 5C 24 ? 48 89 74 24 ? 57 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 84 24 ? ? ? ? 48 8B FA 48 8B D9 B9 ? ? ? ?");
 
         if (!HookFunction(renderAddr, (void*)&SetupAndRenderDetour, &__o__Render, "RenderLayer"))
