@@ -29,7 +29,7 @@ public:
 	void init()
 	{
 		static void* sig = nullptr;
-		if (!sig) sig = findSig("48 8D 05 ? ? ? ? 48 89 45 D0 44 89 6D 00");
+		if (!sig) sig = findSig("48 8D 05 ? ? ? ? 48 89 45 D0 44 89 6D 00"); //1.20.51
 		this->setVTable<LevelSoundEventPacket>(reinterpret_cast<uintptr_t*>(sig));
 	}
 };
