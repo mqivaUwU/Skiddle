@@ -16,21 +16,21 @@ void* __o__uiControlAddr;
 bool uicontrolDetour(UIControl* _this, Vector2<float>* size) // setposition?
 {
     if (_this->CmpName("play_button"))
-    {
+    {/*
         _this->Position.y = (GuiInfo::ScreenRes.y / 2) + ((_this->Size.y) * 1) - 6;
-        _this->GetChild(0)->Position.y = (GuiInfo::ScreenRes.y / 2) + ((_this->Size.y) * 1) - 6;
+        _this->GetChild(0)->Position.y = (GuiInfo::ScreenRes.y / 2) + ((_this->Size.y) * 1) - 6;*/
     }
-    
+
     if (_this->CmpName("settings_button"))
-    {
+    {/*
         _this->Position.y = (GuiInfo::ScreenRes.y / 2) + ((_this->Size.y) * 2) - 6;
-        _this->GetChild(0)->Position.y = (GuiInfo::ScreenRes.y / 2) + ((_this->Size.y) * 2) - 6;
+        _this->GetChild(0)->Position.y = (GuiInfo::ScreenRes.y / 2) + ((_this->Size.y) * 2) - 6;*/
     }
 
     if (_this->CmpName("store_button"))
-    {
+    {/*
         _this->Position.y = (GuiInfo::ScreenRes.y / 2) - ((_this->Size.y) * 2) - 12;
-        _this->GetChild(0)->Position.y = (GuiInfo::ScreenRes.y / 2) - ((_this->Size.y) * 2) - 12;
+        _this->GetChild(0)->Position.y = (GuiInfo::ScreenRes.y / 2) - ((_this->Size.y) * 2) - 12;*/
     }
 
     return CallFunc<bool, UIControl*, Vector2<float>*>(
