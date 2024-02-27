@@ -40,7 +40,7 @@ private:
     void init()
     {
         static void* sig = nullptr;
-        if (!sig) sig = findSig("48 8D 0D ? ? ? ? 0F 57 C0 0F 11 00 C7 40 ? ? ? ? ? C7 40 ? ? ? ? ? 48 8D 05 ? ? ? ? 48 89 02 33 C0 48 89 42 28 48 89 42 40 48 89 42 50 48 89 4A 10");
+        if (!sig) sig = findSig("48 8D 0D ? ? ? ? 0F 57 C0 0F 11 00 C7 40 ? ? ? ? ? C7 40 ? ? ? ? ? 48 8D 05 ? ? ? ? 48 89 02 33 C0 48 89 42 28 48 89 42 40 48 89 42 50 48 89 4A 10"); //1.20.51
         this->setVTable<MobEquipmentPacket>(reinterpret_cast<uintptr_t*>(sig));
     }
 };
