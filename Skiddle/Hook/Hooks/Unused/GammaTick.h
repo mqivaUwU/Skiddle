@@ -2,12 +2,11 @@
 
 void* __o__GammaTick;
 
-float gammaTickDetour(__int64 _this)
+void* gammaTickDetour(byte* _this)
 {
-    if (Game::Core::gamma == -1)
-        return CallFunc<float, __int64>(__o__GammaTick, _this);
-    else
-        return Game::Core::gamma;
+    void* result1 = CallFunc<void*, void*>(__o__GammaTick, _this);
+
+    return result1; // stops here
 }
 
 class GammaTickHook : public FuncHook
@@ -21,7 +20,7 @@ public:
 
     bool Initialize() override
     {
-        void* gammaTickAddr = findSig(xorstr_("48 83 EC ? 80 B9 ? ? ? ? ? 48 8D 54 ? ? 48 8B 01 48 8B 40 ? 74 38 41 B8 16 ? ? ?"));
+        void* gammaTickAddr = (void*)((uintptr_t)findSig(xorstr_("8B 42 18 48 83 C4 28 C3 E8 ? ? ? ? CC CC CC CC CC 48 83 EC 28 80")) + 18); //Updated to 1.20.51
         return HookFunction(gammaTickAddr, (void*)&gammaTickDetour, &__o__GammaTick, xorstr_("GammaTick"));
     }
 };
