@@ -22,6 +22,7 @@ void BobHurtCallback(
             matrix
         );
     }
+
     return;
 }
 
@@ -36,8 +37,8 @@ public:
 
     bool Initialize() override // 0F 84 BD 04 00 00
     {
-        void* viewbobAddr = findSig(xorstr_("40 53 56 48 83 EC 78 ? ? 7C"));
-        fluxSwing = (void*)findOffset(xorstr_("0f 84 ? ? ? ? 48 8b 46 ? 48 85 c0 74 ? 48 8b 08 48 85 c9 74 ? 44 0f b6 69"), xorstr_("FluxSwing"));
+        void* viewbobAddr = findSig(xorstr_("40 53 56 48 83 EC 78 ? ? 7C")); //1.20.51
+        fluxSwing = (void*)findOffset(xorstr_("0f 84 ? ? ? ? 48 8b 46 ? 48 85 c0 74 ? 48 8b 08 48 85 c9 74 ? 44 0f b6 69"), xorstr_("FluxSwing")); //1.20.51
         return HookFunction(viewbobAddr, (void*)&BobHurtCallback, &__o__ViewbobHook, xorstr_("BobHurt"));
     }
 };
