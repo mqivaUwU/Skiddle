@@ -1,25 +1,25 @@
 #pragma once
 
 Vector3<float> getNextPoint(Vector3<float> point1, Vector3<float> point2, float multiplier = 14) {
-	float xdiff = point2.x - point1.x;
-	float ydiff = point2.y - point1.y;
-	float zdiff = point2.z - point1.z;
+    float xdiff = point2.x - point1.x;
+    float ydiff = point2.y - point1.y;
+    float zdiff = point2.z - point1.z;
 
-	float distance = std::sqrt(xdiff * xdiff + ydiff * ydiff + zdiff * zdiff);
-	float xstep = xdiff / distance;
-	float ystep = ydiff / distance;
-	float zstep = zdiff / distance;
+    float distance = std::sqrt(xdiff * xdiff + ydiff * ydiff + zdiff * zdiff);
+    float xstep = xdiff / distance;
+    float ystep = ydiff / distance;
+    float zstep = zdiff / distance;
 
-	xstep *= multiplier;
-	ystep *= multiplier;
-	zstep *= multiplier;
+    xstep *= multiplier;
+    ystep *= multiplier;
+    zstep *= multiplier;
 
-	Vector3<float> nextPoint;
-	nextPoint.x = point1.x + xstep;
-	nextPoint.y = point1.y + ystep;
-	nextPoint.z = point1.z + zstep;
+    Vector3<float> nextPoint;
+    nextPoint.x = point1.x + xstep;
+    nextPoint.y = point1.y + ystep;
+    nextPoint.z = point1.z + zstep;
 
-	return nextPoint;
+    return nextPoint;
 }
 
 // actor components (ty riester)
@@ -56,25 +56,7 @@ class Options;
 class ActorInteraction;
 class ItemStackBase;
 class MobEffectInstance;
-class Attribute {
-public:
-	__int64 hash;
-	__int64 hashedStringHash;
-	class TextHolder attributeName;
-
-private:
-	char __padding[0x32];
-
-public:
-	Attribute() {
-		memset(this, 0x0, sizeof(Attribute));
-	}
-
-	Attribute(__int64 hash) {
-		memset(this, 0x0, sizeof(Attribute));
-		this->hash = hash;
-	}
-};
+class Attribute;
 class AnimationComponentGroupType;
 class ItemUseMethod;
 class ResolvedTextObject;
@@ -99,1191 +81,654 @@ class ChangeDimensionPacket;
 
 class Actor {
 public:
+    virtual ~Actor(void);
+    virtual void getStatusFlag(ActorFlags* flag);
+    virtual void setStatusFlag(ActorFlags, bool);
+    virtual void outOfWorld(void);
+    virtual void reloadHardcoded(enum ActorInitializationMethod, class VariantParameterList const&);
+    virtual void reloadHardcodedClient(enum ActorInitializationMethod, class VariantParameterList const&);
+    virtual void initializeComponents(enum ActorInitializationMethod, class VariantParameterList const&);
+    virtual void reloadComponents(enum ActorInitializationMethod, class VariantParameterList const&);
+    virtual void _serverInitItemStackIds(void);
+    virtual void _doInitialMove(void);
+    virtual bool hasComponent();
+    virtual void resetUserPos(bool);
+    virtual void getOwnerEntityType(void);
+    virtual void remove(void);
+    virtual bool isRuntimePredictedMovementEnabled(void);
+    virtual Vector3<float> getFiringPos(void);
+    virtual float getInterpolatedBodyRot(float); //16
+    virtual float getInterpolatedHeadRot(float); //17 HeadYaw
+    virtual float getInterpolatedBodyYaw(float); //18
+    virtual float getYawSpeedInDegreesPerSecond(void);
+    virtual Vector3<float> getInterpolatedRidingOffset(float, int);
+    virtual void resetInterpolated(void);
+    virtual bool isFireImmune(void);
+    virtual void breaksFallingBlocks(void);
+    virtual void blockedByShield(ActorDamageSource const&, Actor&);
+    virtual bool canDisableShield(void);
+    virtual void teleportTo(Vector3<float> const&, bool, int, int, bool);
+    virtual void lerpMotion(Vector3<float> const&);
+    virtual void tryCreateAddActorPacket(void);
+    virtual void normalTick(void);
+    virtual void baseTick(void); //30
+    virtual void passengerTick(void);
+    virtual void startRiding(Actor&);
+    virtual void addPassenger(Actor&);
+    virtual void getExitTip(std::string const&, InputMode, NewInteractionModel);
+    virtual void getEntityLocNameString(void);
+    virtual bool isInWall(void);
+    virtual bool isInvisible(void);
+    virtual bool canShowNameTag(void);
+    virtual bool canExistInPeaceful(void);
+    virtual void getFormattedNameTag(void);
+    virtual void getNameTagTextColor(void);
+    virtual void getAlwaysShowNameTag(void);
+    virtual void getShadowRadius(void);
+    virtual void getHeadLookVector(float);
+    virtual bool canInteractWithOtherEntitiesInGame(void);
+    virtual void getBrightness(float, enum IConstBlockSource const&);
+    virtual void interactPreventDefault(void);
+    virtual void playerTouch();
+    virtual bool isImmobile(void);
+    virtual bool isSilentObserver(void);
+    virtual bool isPickable(void);
+    virtual bool isSleeping(void);
+    virtual void setSleeping(bool);
+    virtual void setSneaking(bool);
+    virtual bool isBlocking(void);
+    virtual bool isDamageBlocked(ActorDamageSource const&);
+    virtual bool isAlive(void);
+    virtual bool isOnFire(void);
+    virtual bool isSurfaceMob(void);
+    virtual bool isTargetable(void);
+    virtual bool isLocalPlayer(void);
+    virtual bool isPlayer(void);
+    virtual bool canAttack(Actor*, bool);
+    virtual void setTarget(Actor*);
+    virtual bool isValidTarget(Actor*);
+    virtual void attack(Actor&, void*);
+    virtual void performRangedAttack(Actor&, float);
+    virtual void setOwner(void);
+    virtual void setSitting(bool);
+    virtual void onTame(void);
+    virtual void onFailedTame(void);
+    virtual void setStanding(bool);
+    virtual bool canPowerJump(void);
+    virtual bool isEnchanted(void);
+    virtual void shouldRender(void);
+    virtual void playAmbientSound(void);
+    virtual void getAmbientSound(void);
+    virtual bool isInvulnerableTo(void);
+    virtual void getBlockDamageCause(void*);
+    virtual void doFireHurt(int);
+    virtual void onLightningHit(void);
+    virtual void feed(int);
+    virtual void handleEntityEvent(void*, int);
+    virtual void getPickRadius(void);
+    virtual void getActorRendererId(void);
+    virtual void despawn(void);
+    virtual void setArmor(ArmorSlot, void*); //ItemStack
+    virtual void getArmorMaterialTypeInSlot(ArmorSlot);
+    virtual void getArmorMaterialTextureTypeInSlot(ArmorSlot);
+    virtual void getArmorColorInSlot(ArmorSlot, int);
+    virtual void setEquippedSlot(EquipmentSlot, void*);
+    virtual void setCarriedItem(void*);
+    virtual void* getCarriedItem(void); // getSelectedItem
+    virtual void setOffhandSlot(void*);
+    virtual void getEquippedTotem(void);
+    virtual void consumeTotem(void);
+    virtual void save();
+    virtual void load();
+    virtual void queryEntityRenderer(void);
+    virtual void getSourceUniqueID(void);
+    virtual bool canFreeze(void);
+    virtual void getLiquidAABB(void*);
+    virtual void handleInsidePortal();
+    virtual void getPortalCooldown(void);
+    virtual void getPortalWaitTime(void);
+    virtual bool canChangeDimensionsUsingPortal(void);
+    virtual void changeDimension(); // AutomaticID<Dimension, int>
+    virtual void changeDimension(void*, void*);
+    virtual void getControllingPlayer(void);
+    virtual void checkFallDamage(float, bool, bool);
+    virtual void causeFallDamageToActor(float, float);
+    virtual void onSynchedDataUpdate(int);
+    virtual bool canAddPassenger(Actor&);
+    virtual bool canPickupItem(void*);
+    virtual bool canBePulledIntoVehicle(void);
+    virtual void inCaravan(void);
+    virtual void sendMotionPacketIfNeeded(void);
+    virtual bool canSynchronizeNewEntity(void);
+    virtual void startSwimming(void);
+    virtual void stopSwimming(void);
+    virtual void buildDebugInfo(std::string&);
+    virtual void getCommandPermissionLevel(void);
+    virtual void getDeathTime(void);
+    virtual bool canBeAffected(enum uint);
+    virtual bool canBeAffectedByArrow(void*);
+    virtual void onEffectAdded(void*);
+    virtual void onEffectUpdated(void*);
+    virtual void onEffectRemoved(void*);
+    virtual bool canObstructSpawningAndBlockPlacement(void);
+    virtual void getAnimationComponent(void);
+    virtual void openContainerComponent();
+    virtual void swing(void);
+    virtual void useItem(void*, bool);
+    virtual void getDebugText(std::vector<std::string>&);
+    virtual void getMapDecorationRotation(void);
+    virtual void getPassengerYRotation(Actor const&);
+    virtual void add(void*);
+    virtual void drop(void*);
+    virtual void getInteraction(Vector3<float> const&);
+    virtual bool canDestroyBlock(Block const&);
+    virtual void setAuxValue(int);
+    virtual void startSpinAttack(void);
+    virtual void stopSpinAttack(void);
+    virtual void renderDebugServerState();
+    virtual void getDeletionDelayTimeSeconds(void);
+    virtual void kill(void);
+    virtual void die();
+    virtual void shouldDropDeathLoot(void);
+    virtual void applySnapshot();
+    virtual void getNextStep(float);
+    virtual void onPush(Actor&);
+    virtual void getLastDeathPos(void);
+    virtual void getLastDeathDimension(void);
+    virtual bool hasDiedBefore(void);
+    virtual void doEnterWaterSplashEffect(void);
+    virtual void doExitWaterSplashEffect(void);
+    virtual void doWaterSplashEffect(void);
+    virtual void _shouldProvideFeedbackOnHandContainerItemSet(void*);
+    virtual void _shouldProvideFeedbackOnArmorSet(void*);
+    virtual void updateEntitySpecificMolangVariables();
+    virtual void shouldTryMakeStepSound(void);
+    virtual bool canMakeStepSound(void);
+    virtual void _hurt(float, bool, bool);
+    virtual void readAdditionalSaveData();
+    virtual void addAdditionalSaveData();
+    virtual void _playStepSound();
+    virtual void _makeFlySound(void);
+    virtual void _doAutoAttackOnTouch(Actor&);
 };
 
 class Mob : public Actor { // v1.20.0.1
 public:
-	//virtual void setStatusFlag(ActorFlags, bool);
-	//virtual int getLastHurtByMob(void);
-	//virtual void setLastHurtByMob(Mob*);
-	//virtual int getLastHurtByPlayer(void);
-	//virtual void setLastHurtByPlayer(Player*);
-	//virtual int getLastHurtMob(void);
-	//virtual void setLastHurtMob(Actor*);
-	//virtual void outOfWorld(void);
-	//virtual void reloadHardcoded(/*Actor::InitializationMethod, VariantParameterList const&*/);
-	//virtual void reloadHardcodedClient(/*Actor::InitializationMethod, VariantParameterList const&*/);
-	//virtual void initializeComponents(/*Actor::InitializationMethod, VariantParameterList const&*/);
-	//virtual void reloadComponents(/*Actor::InitializationMethod, VariantParameterList const&*/);
-	//virtual void _serverInitItemStackIds(void);
-	//virtual void _doInitialMove(void);
-	//virtual void hasComponent(HashedString const&);
-	//virtual void destructor();
-	//virtual void destructor2();
-	//virtual void resetUserPos(bool);
-	//virtual int getOwnerEntityType(void);
-	//virtual void remove(void);
-	//virtual bool isRuntimePredictedMovementEnabled(void);
-	//virtual int getPredictedMovementValues(void);
-	//virtual Vector3<float> getPosition(void);
-	//virtual int getPosPrev(void);
-	//virtual float getPosExtrapolated(float);
-	//virtual float getAttachPos(ActorLocation, float);
-	//virtual int getFiringPos(void);
-	//virtual void move(struct Vec3 const&);
-	//virtual void move(class IActorMovementProxy&, struct Vec3 const&);
-	//virtual float getInterpolatedRidingPosition(float);
-	//virtual float getInterpolatedBodyRot(float);
-	//virtual float getInterpolatedHeadRot(float);
-	//virtual float getInterpolatedBodyYaw(float);
-	//virtual int getYawSpeedInDegreesPerSecond(void);
-	//virtual float getInterpolatedWalkAnimSpeed(float);
-	//virtual float getInterpolatedRidingOffset(float, int);
-	//virtual void resetInterpolated(void);
-	//virtual void updateEntityInside(AABB<float> const&);
-	//virtual void updateEntityInside(void);
-	//virtual bool isFireImmune(void);
-	//virtual void breaksFallingBlocks(void);
-	//virtual void blockedByShield(ActorDamageSource const&, Actor&);
-	//virtual void canDisableShield(void);
-	//virtual void teleportTo(struct Vec3 const&, bool, int, int, bool);
-	//virtual void tryTeleportTo(struct Vec3 const&, bool, bool, int, int);
-	//virtual void chorusFruitTeleport(struct Vec3 const&);
-	//virtual void lerpMotion(struct Vec3 const&);
-	//virtual void tryCreateAddActorPacket(void);
-	//virtual void normalTick(void);
-	//virtual void baseTick(void);
-	//virtual void passengerTick(void);
-	//virtual void positionPassenger(Actor&, float);
-	//virtual void startRiding(Actor&);
-	//virtual void addPassenger(Actor&);
-	//virtual void flagPassengerToRemove(Actor&);
-	//virtual int getExitTip(std::string const&, InputMode, NewInteractionModel);
-	//virtual int getEntityLocNameString(void);
-	//virtual void intersects(struct Vec3 const&, struct Vec3 const&);
-	//virtual bool isInWall(void);
-	//virtual bool isInvisible(void);
-	//virtual void canShowNameTag(void);
-	//virtual void canExistInPeaceful(void);
-	//virtual void setNameTagVisible(bool);
-	//virtual TextHolder* getNameTag(void);
-	//virtual int getNameTagAsHash(void);
-	//virtual int getFormattedNameTag(void);
-	//virtual void filterFormattedNameTag(UIProfanityContext const&);
-	//virtual void setNameTag(std::string const&);
-	//virtual int getAlwaysShowNameTag(void);
-	//virtual void setScoreTag(std::string const&);
-	//virtual int getScoreTag(void);
-	//virtual bool isInWater(void);
-	//virtual bool isUnderLiquid(MaterialType);
-	//virtual bool isOverWater(void);
-	//virtual void setBlockMovementSlowdownMultiplier(BlockLegacy const&, struct Vec3 const&);
-	//virtual void resetBlockMovementSlowdownMultiplier(void);
-	//virtual int getCameraOffset(void);
-	//virtual int getShadowHeightOffs(void);
-	//virtual int getShadowRadius(void);
-	//virtual float getHeadLookVector(float);
-	//virtual void canSeeInvisible(void);
-	//virtual void canSee(Actor const&);
-	//virtual void canSee(struct Vec3 const&);
-	//virtual void canInteractWithOtherEntitiesInGame(void);
-	//virtual bool isSkyLit(float);
-	//virtual float getBrightness(float, class IConstBlockSource const&);
-	//virtual void interactPreventDefault(void);
-	//virtual void playerTouch(Player&);
-	//virtual void onAboveBubbleColumn(bool);
-	//virtual void onInsideBubbleColumn(bool);
-	//virtual bool isImmobile(void);
-	//virtual bool isSilent(void);
-	//virtual bool isSilentObserver(void);
-	//virtual bool isPickable(void);
-	//virtual bool isFishable(void);
-	//virtual bool isSleeping(void);
-	//virtual void setSleeping(bool);
-	//virtual bool isShootable(void);
-	//virtual void setSneaking(bool);
-	//virtual bool isBlocking(void);
-	//virtual bool isDamageBlocked(ActorDamageSource const&);
-	//virtual bool isAlive(void);
-	//virtual bool isOnFire(void);
-	//virtual bool isOnHotBlock(void);
-	//virtual bool isCreativeModeAllowed(void);
-	//virtual bool isSurfaceMob(void);
-	//virtual bool isTargetable(void);
-	//virtual bool isLocalPlayer(void);
-	//virtual bool isRemotePlayer(void);
-	//virtual bool isPlayer(void);
-	//virtual bool isAffectedByWaterBottle(void);
-	//virtual void canAttack(Actor*, bool);
-	//virtual void setTarget(Actor*);
-	//virtual bool isValidTarget(Actor*);
-	//virtual void attack(Actor&, ActorDamageCause const&);
-	//virtual void performRangedAttack(Actor&, float);
-	//virtual int getEquipmentCount(void);
-	//virtual void setOwner(uint64_t);
-	//virtual void setSitting(bool);
-	//virtual void onTame(void);
-	//virtual void onFailedTame(void);
-	//virtual int getInventorySize(void);
-	//virtual int getEquipSlots(void);
-	//virtual int getChestSlots(void);
-	//virtual void setStanding(bool);
-	//virtual void canPowerJump(void);
-	//virtual void setCanPowerJump(bool);
-	//virtual bool isEnchanted(void);
-	//virtual void vehicleLanded(struct Vec3 const&, struct Vec3 const&);
-	//virtual void shouldRender(void);
-	//virtual void playAmbientSound(void);
-	//virtual int getAmbientSound(void);
-	//virtual bool isInvulnerableTo(ActorDamageSource const&);
-	//virtual int getBlockDamageCause(Block const&);
-	//virtual void animateHurt(void);
-	//virtual void doFireHurt(int);
-	//virtual void onLightningHit(void);
-	//virtual void onBounceStarted(BlockPos const&, Block const&);
-	//virtual void feed(int);
-	//virtual void handleEntityEvent(ActorEvent, int);
-	//virtual int getPickRadius(void);
-	//virtual int getActorRendererId(void);
-	//virtual void spawnAtLocation(int, int);
-	//virtual void spawnAtLocation(int, int, float);
-	//virtual void spawnAtLocation(ItemStack const&, float);
-	//virtual void despawn(void);
-	//virtual void killed(Actor&);
-	//virtual void awardKillScore(Actor&, int);
-	//virtual void setArmor(ArmorSlot, ItemStack const&);
-	//virtual int getArmor(ArmorSlot);
-	//virtual int getAllArmor(void);
-	//virtual int getArmorMaterialTypeInSlot(ArmorSlot);
-	//virtual int getArmorMaterialTextureTypeInSlot(ArmorSlot);
-	//virtual int getArmorColorInSlot(ArmorSlot, int);
-	//virtual int getEquippedSlot(EquipmentSlot);
-	//virtual void setEquippedSlot(EquipmentSlot, ItemStack const&);
-	//virtual void setCarriedItem(ItemStack const&);
-	//virtual int getCarriedItem(void);
-	//virtual void setOffhandSlot(ItemStack const&);
-	//virtual int getEquippedTotem(void);
-	//virtual void consumeTotem(void);
-	//virtual void save(CompoundTag&);
-	//virtual void saveWithoutId(CompoundTag&);
-	//virtual void load(CompoundTag const&, DataLoadHelper&);
-	//virtual void loadLinks(CompoundTag const&, std::vector<ActorLink>&, DataLoadHelper&);
-	//virtual int getEntityTypeId(void);
-	//virtual void queryEntityRenderer(void);
-	//virtual int getSourceUniqueID(void);
-	//virtual void thawFreezeEffect(void);
-	//virtual void canFreeze(void);
-	//virtual bool isWearingLeatherArmor(void);
-	//virtual int getLiquidAABB(MaterialType);
-	//virtual void handleInsidePortal(BlockPos const&);
-	//virtual int getPortalCooldown(void);
-	//virtual int getPortalWaitTime(void);
-	//virtual void canChangeDimensionsUsingPortal(void);
-	//virtual void changeDimension();
-	//virtual void changeDimension(ChangeDimensionPacket const&);
-	//virtual int getControllingPlayer(void);
-	//virtual void checkFallDamage(float, bool);
-	//virtual void causeFallDamage(float, float, ActorDamageSource);
-	//virtual void handleFallDistanceOnServer(float, float, bool);
-	//virtual void playSynchronizedSound(LevelSoundEvent, struct Vec3 const&, Block const&, bool);
-	//virtual void playSynchronizedSound(LevelSoundEvent, struct Vec3 const&, int, bool);
-	//virtual void onSynchedFlagUpdate(int, long, long);
-	//virtual void onSynchedDataUpdate(int);
-	//virtual void canAddPassenger(Actor&);
-	//virtual void canPickupItem(ItemStack const&);
-	//virtual void canBePulledIntoVehicle(void);
-	//virtual void inCaravan(void);
-	//virtual bool isLeashableType(void);
-	//virtual void tickLeash(void);
-	//virtual void sendMotionPacketIfNeeded(void);
-	//virtual void canSynchronizeNewEntity(void);
-	//virtual void stopRiding(bool, bool, bool);
-	//virtual void startSwimming(void);
-	//virtual void stopSwimming(void);
-	//virtual void buildDebugInfo(std::string&);
-	//virtual int getCommandPermissionLevel(void);
-	//virtual bool isClientSide(void);
-	//virtual int getMutableAttribute(Attribute const&);
-	//virtual int getAttribute(Attribute const&);
-	//virtual int getDeathTime(void);
-	//virtual void heal(int);
-	//virtual bool isInvertedHealAndHarm(void);
-	//virtual void canBeAffected(int);
-	//virtual void canBeAffectedByArrow(MobEffectInstance const&);
-	//virtual void onEffectAdded(MobEffectInstance&);
-	//virtual void onEffectUpdated(MobEffectInstance&);
-	//virtual void onEffectRemoved(MobEffectInstance&);
-	//virtual void canObstructSpawningAndBlockPlacement(void);
-	//virtual int getAnimationComponent(void);
-	//virtual void openContainerComponent(Player&);
-	//virtual void swing(void);
-	//virtual void useItem(ItemStackBase&, ItemUseMethod, bool);
-	//virtual void hasOutputSignal(char);
-	//virtual int getOutputSignal(void);
-	//virtual int getDebugText(std::vector<std::string>&);
-	//virtual int getMapDecorationRotation(void);
-	//virtual int getPassengerYRotation(Actor const&);
-	//virtual void add(ItemStack&);
-	//virtual void drop(ItemStack const&, bool);
-	//virtual int getInteraction(Player&, ActorInteraction&, struct Vec3 const&);
-	//virtual void canDestroyBlock(Block const&);
-	//virtual void setAuxValue(int);
-	//virtual void setSize(float, float);
-	//virtual void onOrphan(void);
-	//virtual void wobble(void);
-	//virtual void wasHurt(void);
-	//virtual void startSpinAttack(void);
-	//virtual void stopSpinAttack(void);
-	//virtual void setDamageNearbyMobs(bool);
-	//virtual void renderDebugServerState(Options const&);
-	//virtual void reloadLootTable(void);
-	//virtual void reloadLootTable(EquipmentTableDefinition const&);
-	//virtual int getDeletionDelayTimeSeconds(void);
-	//virtual void kill(void);
-	//virtual void die(ActorDamageSource const&);
-	//virtual void shouldDropDeathLoot(void);
-	//virtual void shouldTick(void);
-	//virtual void applySnapshot(EntityContext const&, EntityContext const&);
-	//virtual float getNextStep(float);
-	//virtual int getLootTable(void);
-	//virtual void onPush(Actor&);
-	//virtual int getLastDeathPos(void);
-	//virtual int getLastDeathDimension(void);
-	//virtual void hasDiedBefore(void);
-	//virtual void doWaterSplashEffect(void);
-	//virtual void _shouldProvideFeedbackOnHandContainerItemSet(HandSlot, ItemStack const&);
-	//virtual void _shouldProvideFeedbackOnArmorSet(ArmorSlot, ItemStack const&);
-	//virtual void updateEntitySpecificMolangVariables(RenderParams&);
-	//virtual void shouldTryMakeStepSound(void);
-	//virtual void canMakeStepSound(void);
-	//virtual void _hurt(ActorDamageSource const&, float, bool, bool);
-	//virtual void markHurt(void);
-	//virtual void _getAnimationComponent(std::shared_ptr<AnimationComponent>&, AnimationComponentGroupType);
-	//virtual void readAdditionalSaveData(CompoundTag const&, DataLoadHelper&);
-	//virtual void addAdditionalSaveData(CompoundTag&);
-	//virtual void _playStepSound(BlockPos const&, Block const&);
-	//virtual void _playFlySound(BlockPos const&, Block const&);
-	//virtual void _makeFlySound(void);
-	//virtual void checkInsideBlocks(float);
-	//virtual void pushOutOfBlocks(struct Vec3 const&);
-	//virtual void spawnTrailBubbles(void);
-	//virtual void updateInsideBlock(void);
-	//virtual void _removePassenger(uint64_t const&, bool, bool, bool);
-	//virtual void _onSizeUpdated(void);
-	//virtual void _doAutoAttackOnTouch(Actor&);
-	//virtual void knockback(Actor*, int, float, float, float, float, float);
-	//virtual void spawnAnim(void);
-	//virtual void setSprinting(bool);
-	//virtual int getHurtSound(void);
-	//virtual int getDeathSound(void);
-	//virtual int getSpeed(void);
-	//virtual void setSpeed(float);
-	//virtual void hurtEffects(ActorDamageSource const&, float, bool, bool);
-	//virtual int getMeleeWeaponDamageBonus(Actor);
-	//virtual int getMeleeKnockbackBonus(void);
-	//virtual void travel(float, float, float, bool);
-	//virtual void applyFinalFriction(float, bool);
-	//virtual void aiStep(void);
-	//virtual void aiStep2(class IMobMovementProxy&);
-	//virtual void pushActors(void);
-	//virtual void lookAt(Actor*, float, float);
-	//virtual bool isLookingAtAnEntity(void);
-	//virtual void checkSpawnRules(bool);
-	//virtual void checkSpawnObstruction(void);
-	//virtual float getAttackAnim(float);
-	//virtual int getItemUseDuration(void);
-	//virtual int getItemUseStartupProgress(void);
-	//virtual int getItemUseIntervalProgress(void);
-	//virtual int getItemUseIntervalAxis(void);
-	//virtual int getTimeAlongSwing(void);
-	//virtual void ate(void);
-	//virtual int getMaxHeadXRot(void);
-	//virtual bool isAlliedTo(Actor);
-	//virtual void doHurtTarget(Actor*, ActorDamageCause const&);
-	//virtual void canBeControlledByPassenger(void);
-	//virtual void leaveCaravan(void);
-	//virtual void joinCaravan(Actor);
-	//virtual void hasCaravanTail(void);
-	//virtual int getCaravanHead(void);
-	//virtual int getArmorValue(void);
-	//virtual int getArmorCoverPercentage(void);
-	//virtual int getToughnessValue(void);
-	//virtual void hurtArmorSlots(ActorDamageSource const&, int, std::bitset<4ul>);
-	//virtual void setDamagedArmor(ArmorSlot, ItemStack const&);
-	//virtual void sendArmorDamage(std::bitset<4ul>);
-	//virtual void sendArmor(std::bitset<4ul>);
-	//virtual void containerChanged(int);
-	//virtual void updateEquipment(void);
-	//virtual void clearEquipment(void);
-	//virtual int getAllArmorID(void);
-	//virtual int getAllHand(void);
-	//virtual int getAllEquipment(void);
-	//virtual int getArmorTypeHash(void);
-	//virtual void dropEquipmentOnDeath(ActorDamageSource const&, int);
-	//virtual void dropEquipmentOnDeath(void);
-	//virtual void clearVanishEnchantedItemsOnDeath(void);
-	//virtual void sendInventory(bool);
-	//virtual float getDamageAfterEnchantReduction(ActorDamageSource const&, float);
-	//virtual float getDamageAfterArmorReduction(ActorDamageSource const&, float);
-	//virtual float getDamageAfterResistanceEffect(ActorDamageSource const&, float);
-	//virtual void createAIGoals(void);
-	//virtual void onBorn(Actor&, Actor&);
-	//virtual void setItemSlot(EquipmentSlot, ItemStack const&);
-	//virtual void setTransitioningSitting(bool);
-	//virtual void attackAnimation(Actor*, float);
-	//virtual int getAttackTime(void);
-	//virtual void _getWalkTargetValue(BlockPos const&);
-	//virtual void canExistWhenDisallowMob(void);
-	//virtual void ascendLadder(void);
-	//virtual void ascendBlockByJumping(void);
-	//virtual void descendBlockByCrouching(void);
-	//virtual void dropContainer(void);
-	//virtual void initBodyControl(void);
-	//virtual void jumpFromGround(IConstBlockSource const&);
-	//virtual void jumpFromGround(class IMobMovementProxy&, IConstBlockSource const&);
-	//virtual void newServerAiStep(void);
-	//virtual void _serverAiMobStep(void);
-	//virtual void dropBags(void);
-	//virtual void tickDeath(void);
-	//virtual void updateGliding(void);
-	//virtual void _allowAscendingScaffolding(void);
-	//virtual void _getAdjustedAABBForSpawnCheck(AABB<float> const&, struct Vec3 const&);
-};
-
-class AttributeInstance {
-private:
-	char __padding[0x74];
-
-public:
-	float minimumValue;
-	float maximumValue;
-	float currentValue;
-	bool IsBadPtr()
-	{
-		MEMORY_BASIC_INFORMATION mbi;
-
-		if (VirtualQuery(reinterpret_cast<LPCVOID>(this), &mbi, sizeof(mbi)) == 0 ||
-			mbi.State != MEM_COMMIT || !(mbi.Protect & PAGE_READWRITE))
-			return true;
-
-		if (!this)
-			return true;
-
-		return false;
-	}
-	~AttributeInstance();
-	virtual void tick(void);
+    virtual void knockback(Actor*, int, float, float, float, float, float);
+    virtual void spawnAnim(void);
+    virtual void setSprinting(bool);
+    virtual void getHurtSound(void);
+    virtual void getDeathSound(void);
+    virtual void getSpeed(void);
+    virtual void setSpeed(float);
+    virtual void hurtEffects(float, bool, bool);
+    virtual void aiStep(void);
+    virtual void pushActors(void);
+    virtual void checkSpawnRules(bool);
+    virtual void checkSpawnObstruction(void);
+    virtual int getItemUseDuration(void);
+    virtual void getItemUseStartupProgress(void);
+    virtual void getItemUseIntervalProgress(void);
+    virtual void getMaxHeadXRot(void);
+    virtual bool isAlliedTo(Mob*);
+    virtual void doHurtTarget(Actor*);
+    virtual void getArmorValue(void);
+    virtual void hurtArmorSlots(int);
+    virtual void setDamagedArmor();
+    virtual void sendArmorDamage();
+    virtual void sendArmor();
+    virtual void getAllHand(void);
+    virtual void getAllEquipment(void);
+    virtual void dropEquipmentOnDeath(int);
+    virtual void dropEquipmentOnDeath(void);
+    virtual void clearVanishEnchantedItemsOnDeath(void);
+    virtual void sendInventory(bool);
+    virtual void getDamageAfterEnchantReduction(float);
+    virtual void createAIGoals(void);
+    virtual void onBorn(Actor&, Actor&);
+    virtual void setItemSlot(int);
+    virtual void setTransitioningSitting(bool);
+    virtual void getAttackTime(void);
+    virtual void _getWalkTargetValue(Vector3<int> const&);
+    virtual bool canExistWhenDisallowMob(void);
+    virtual void initBodyControl(void);
+    virtual void newServerAiStep(void);
+    virtual void tickDeath(void);
+    virtual void _getAdjustedAABBForSpawnCheck(AABB<float> const&, Vector3<float> const&);
 };
 
 class Player : public Mob { // v1.20.0.1
 public:
-	virtual void setStatusFlag(ActorFlags, bool);
-	virtual int getLastHurtByMob(void);
-	virtual void setLastHurtByMob(Mob*);
-	virtual int getLastHurtByPlayer(void);
-	virtual void setLastHurtByPlayer(Player*);
-	virtual int getLastHurtMob(void);
-	virtual void setLastHurtMob(Actor*);
-	virtual void outOfWorld(void);
-	virtual void reloadHardcoded(/*Actor::InitializationMethod, VariantParameterList const&*/);
-	virtual void reloadHardcodedClient(/*Actor::InitializationMethod, VariantParameterList const&*/);
-	virtual void initializeComponents(/*Actor::InitializationMethod, VariantParameterList const&*/);
-	virtual void reloadComponents(/*Actor::InitializationMethod, VariantParameterList const&*/);
-	virtual void _serverInitItemStackIds(void);
-	virtual void _doInitialMove(void);
-	virtual void hasComponent(HashedString const&);
-	virtual void destructor();
-	virtual void destructor2();
-	virtual void resetUserPos(bool);
-	virtual int getOwnerEntityType(void);
-	virtual void remove(void);
-	virtual bool isRuntimePredictedMovementEnabled(void);
-	virtual int getPredictedMovementValues(void);
-	virtual Vector3<float> getPosition(void);
-	virtual int getPosPrev(void);
-	virtual float getPosExtrapolated(float);
-	virtual float getAttachPos(ActorLocation, float);
-	virtual int getFiringPos(void);
-	virtual void move(struct Vec3 const&);
-	virtual void move(class IActorMovementProxy&, struct Vec3 const&);
-	virtual float getInterpolatedRidingPosition(float);
-	virtual float getInterpolatedBodyRot(float);
-	virtual float getInterpolatedHeadRot(float);
-	virtual float getInterpolatedBodyYaw(float);
-	virtual int getYawSpeedInDegreesPerSecond(void);
-	virtual float getInterpolatedWalkAnimSpeed(float);
-	virtual float getInterpolatedRidingOffset(float, int);
-	virtual void resetInterpolated(void);
-	virtual void updateEntityInside(AABB<float> const&);
-	virtual void updateEntityInside(void);
-	virtual bool isFireImmune(void);
-	virtual void breaksFallingBlocks(void);
-	virtual void blockedByShield(ActorDamageSource const&, Actor&);
-	virtual void canDisableShield(void);
-	virtual void teleportTo(Vector3<float>, bool, int, int, bool);
-	virtual void tryTeleportTo(struct Vec3 const&, bool, bool, int, int);
-	virtual void chorusFruitTeleport(struct Vec3 const&);
-	virtual void lerpMotion(Vector3<float> const&);
-	virtual void tryCreateAddActorPacket(void);
-	virtual void normalTick(void);
-	virtual void baseTick(void);
-	virtual void passengerTick(void);
-	virtual void positionPassenger(Actor&, float);
-	virtual void startRiding(Actor&);
-	virtual void addPassenger(Actor&);
-	virtual void flagPassengerToRemove(Actor&);
-	virtual int getExitTip(std::string const&, InputMode, NewInteractionModel);
-	virtual int getEntityLocNameString(void);
-	virtual void intersects(struct Vec3 const&, struct Vec3 const&);
-	virtual bool isInWall(void);
-	virtual bool isInvisible(void);
-	virtual void canShowNameTag(void);
-	virtual void canExistInPeaceful(void);
-	virtual void setNameTagVisible(bool);
-	virtual TextHolder* getNameTag(void);
-	virtual int getNameTagAsHash(void);
-	virtual int getFormattedNameTag(void);
-	virtual void filterFormattedNameTag(UIProfanityContext const&);
-	virtual void setNameTag(std::string const&);
-	virtual int getAlwaysShowNameTag(void);
-	virtual void setScoreTag(std::string const&);
-	virtual int getScoreTag(void);
-	virtual bool isInWater(void);
-	virtual bool isUnderLiquid(MaterialType);
-	virtual bool isOverWater(void);
-	virtual void setBlockMovementSlowdownMultiplier(BlockLegacy const&, struct Vec3 const&);
-	virtual void resetBlockMovementSlowdownMultiplier(void);
-	virtual int getCameraOffset(void);
-	virtual int getShadowHeightOffs(void);
-	virtual int getShadowRadius(void);
-	virtual float getHeadLookVector(float);
-	virtual bool canSeeInvisible(void);
-	virtual bool canSee(Player const&);
-	virtual bool canSee(Vector3<float> const&);
-	virtual void canInteractWithOtherEntitiesInGame(void);
-	virtual bool isSkyLit(float);
-	virtual float getBrightness(float, BlockSource* const&);
-	virtual void interactPreventDefault(void);
-	virtual void playerTouch(Player&);
-	virtual void onAboveBubbleColumn(bool);
-	virtual void onInsideBubbleColumn(bool);
-	virtual bool isImmobile(void);
-	virtual bool isSilent(void);
-	virtual bool isSilentObserver(void);
-	virtual bool isPickable(void);
-	virtual bool isFishable(void);
-	virtual bool isSleeping(void);
-	virtual void setSleeping(bool);
-	virtual bool isShootable(void);
-	virtual void setSneaking(bool);
-	virtual bool isBlocking(void);
-	virtual bool isDamageBlocked(ActorDamageSource const&);
-	virtual bool isAlive(void);
-	virtual bool isOnFire(void);
-	virtual bool isOnHotBlock(void);
-	virtual bool isCreativeModeAllowed(void);
-	virtual bool isSurfaceMob(void);
-	virtual bool isTargetable(void);
-	virtual bool isLocalPlayer(void);
-	virtual bool isRemotePlayer(void);
-	virtual bool isPlayer(void);
-	virtual bool isAffectedByWaterBottle(void);
-	virtual void canAttack(Actor*, bool);
-	virtual void setTarget(Actor*);
-	virtual bool isValidTarget(Actor*);
-	virtual void attack(Actor&, ActorDamageCause const&);
-	virtual void performRangedAttack(Actor&, float);
-	virtual int getEquipmentCount(void);
-	virtual void setOwner(uint64_t);
-	virtual void setSitting(bool);
-	virtual void onTame(void);
-	virtual void onFailedTame(void);
-	virtual int getInventorySize(void);
-	virtual int getEquipSlots(void);
-	virtual int getChestSlots(void);
-	virtual void setStanding(bool);
-	virtual void canPowerJump(void);
-	virtual void setCanPowerJump(bool);
-	virtual bool isEnchanted(void);
-	virtual void vehicleLanded(struct Vec3 const&, struct Vec3 const&);
-	virtual void shouldRender(void);
-	virtual void playAmbientSound(void);
-	virtual int getAmbientSound(void);
-	virtual bool isInvulnerableTo(ActorDamageSource const&);
-	virtual int getBlockDamageCause(Block const&);
-	virtual void animateHurt(void);
-	virtual void doFireHurt(int);
-	virtual void onLightningHit(void);
-	virtual void onBounceStarted(BlockPos const&, Block const&);
-	virtual void feed(int);
-	virtual void handleEntityEvent(ActorEvent, int);
-	virtual int getPickRadius(void);
-	virtual int getActorRendererId(void);
-	virtual void spawnAtLocation(int, int);
-	virtual void spawnAtLocation(int, int, float);
-	virtual void spawnAtLocation(ItemStack const&, float);
-	virtual void despawn(void);
-	virtual void killed(Actor&);
-	virtual void awardKillScore(Actor&, int);
-	virtual void setArmor(ArmorSlot, ItemStack const&);
-	virtual int getArmor(ArmorSlot);
-	virtual int getAllArmor(void);
-	virtual int getArmorMaterialTypeInSlot(ArmorSlot);
-	virtual int getArmorMaterialTextureTypeInSlot(ArmorSlot);
-	virtual int getArmorColorInSlot(ArmorSlot, int);
-	virtual int getEquippedSlot(EquipmentSlot);
-	virtual void setEquippedSlot(EquipmentSlot, ItemStack const&);
-	virtual void setCarriedItem(ItemStack const&);
-	virtual int getCarriedItem(void);
-	virtual void setOffhandSlot(ItemStack const&);
-	virtual int getEquippedTotem(void);
-	virtual void consumeTotem(void);
-	virtual void save(CompoundTag&);
-	virtual void saveWithoutId(CompoundTag&);
-	virtual void load(CompoundTag const&, DataLoadHelper&);
-	virtual void loadLinks(CompoundTag const&, std::vector<ActorLink>&, DataLoadHelper&);
-	virtual int getEntityTypeId(void);
-	virtual void queryEntityRenderer(void);
-	virtual int getSourceUniqueID(void);
-	virtual void thawFreezeEffect(void);
-	virtual void canFreeze(void);
-	virtual bool isWearingLeatherArmor(void);
-	virtual int getLiquidAABB(MaterialType);
-	virtual void handleInsidePortal(BlockPos const&);
-	virtual int getPortalCooldown(void);
-	virtual int getPortalWaitTime(void);
-	virtual void canChangeDimensionsUsingPortal(void);
-	virtual void changeDimension(/*AutomaticID<Dimension, int>*/);
-	virtual void changeDimension(ChangeDimensionPacket const&);
-	virtual int getControllingPlayer(void);
-	virtual void checkFallDamage(float, bool);
-	virtual void causeFallDamage(float, float, ActorDamageSource);
-	virtual void handleFallDistanceOnServer(float, float, bool);
-	virtual void playSynchronizedSound(class LevelSoundEvent, struct Vec3 const&, Block const&, bool);
-	virtual void playSynchronizedSound(class LevelSoundEvent, struct Vec3 const&, int, bool);
-	virtual void onSynchedFlagUpdate(int, long, long);
-	virtual void onSynchedDataUpdate(int);
-	virtual void canAddPassenger(Actor&);
-	virtual void canPickupItem(ItemStack const&);
-	virtual void canBePulledIntoVehicle(void);
-	virtual void inCaravan(void);
-	virtual bool isLeashableType(void);
-	virtual void tickLeash(void);
-	virtual void sendMotionPacketIfNeeded(void);
-	virtual void canSynchronizeNewEntity(void);
-	virtual void stopRiding(bool, bool, bool);
-	virtual void startSwimming(void);
-	virtual void stopSwimming(void);
-	virtual void buildDebugInfo(std::string&);
-	virtual int getCommandPermissionLevel(void);
-	virtual bool isClientSide(void);
-	virtual int getMutableAttribute(Attribute const&);
-	virtual class AttributeInstance* getAttribute(Attribute const&);
-	virtual int getDeathTime(void);
-	virtual void heal(int);
-	virtual bool isInvertedHealAndHarm(void);
-	virtual void canBeAffected(int);
-	virtual void canBeAffectedByArrow(MobEffectInstance const&);
-	virtual void onEffectAdded(MobEffectInstance&);
-	virtual void onEffectUpdated(MobEffectInstance&);
-	virtual void onEffectRemoved(MobEffectInstance&);
-	virtual void canObstructSpawningAndBlockPlacement(void);
-	virtual int getAnimationComponent(void);
-	virtual void openContainerComponent(Player&);
-	virtual void swing(void);
-	virtual void useItem(ItemStackBase&, ItemUseMethod, bool);
-	virtual void hasOutputSignal(char);
-	virtual int getOutputSignal(void);
-	virtual int getDebugText(std::vector<std::string>&);
-	virtual int getMapDecorationRotation(void);
-	virtual int getPassengerYRotation(Actor const&);
-	virtual void add(ItemStack&);
-	virtual void drop(ItemStack const&, bool);
-	virtual int getInteraction(Player&, ActorInteraction&, struct Vec3 const&);
-	virtual void canDestroyBlock(Block const&);
-	virtual void setAuxValue(int);
-	virtual void setSize(float, float);
-	virtual void onOrphan(void);
-	virtual void wobble(void);
-	virtual void wasHurt(void);
-	virtual void startSpinAttack(void);
-	virtual void stopSpinAttack(void);
-	virtual void setDamageNearbyMobs(bool);
-	virtual void renderDebugServerState(Options const&);
-	virtual void reloadLootTable(void);
-	virtual void reloadLootTable(EquipmentTableDefinition const&);
-	virtual int getDeletionDelayTimeSeconds(void);
-	virtual void kill(void);
-	virtual void die(ActorDamageSource const&);
-	virtual void shouldDropDeathLoot(void);
-	virtual void shouldTick(void);
-	virtual void applySnapshot(EntityContext const&, EntityContext const&);
-	virtual float getNextStep(float);
-	virtual int getLootTable(void);
-	virtual void onPush(Actor&);
-	virtual int getLastDeathPos(void);
-	virtual int getLastDeathDimension(void);
-	virtual void hasDiedBefore(void);
-	virtual void doWaterSplashEffect(void);
-	virtual void _shouldProvideFeedbackOnHandContainerItemSet(HandSlot, ItemStack const&);
-	virtual void _shouldProvideFeedbackOnArmorSet(ArmorSlot, ItemStack const&);
-	virtual void updateEntitySpecificMolangVariables(RenderParams&);
-	virtual void shouldTryMakeStepSound(void);
-	virtual void canMakeStepSound(void);
-	virtual void _hurt(ActorDamageSource const&, float, bool, bool);
-	virtual void markHurt(void);
-	virtual void _getAnimationComponent(std::shared_ptr<AnimationComponent>&, AnimationComponentGroupType);
-	virtual void readAdditionalSaveData(CompoundTag const&, DataLoadHelper&);
-	virtual void addAdditionalSaveData(CompoundTag&);
-	virtual void _playStepSound(BlockPos const&, Block const&);
-	virtual void _playFlySound(BlockPos const&, Block const&);
-	virtual void _makeFlySound(void);
-	virtual void checkInsideBlocks(float);
-	virtual void pushOutOfBlocks(struct Vec3 const&);
-	virtual void spawnTrailBubbles(void);
-	virtual void updateInsideBlock(void);
-	virtual void _removePassenger(uint64_t const&, bool, bool, bool);
-	virtual void _onSizeUpdated(void);
-	virtual void _doAutoAttackOnTouch(Actor&);
-	virtual void knockback(Actor*, int, float, float, float, float, float);
-	virtual void spawnAnim(void);
-	virtual void setSprinting(bool);
-	virtual int getHurtSound(void);
-	virtual int getDeathSound(void);
-	virtual int getSpeed(void);
-	virtual void setSpeed(float);
-	virtual void hurtEffects(ActorDamageSource const&, float, bool, bool);
-	virtual int getMeleeWeaponDamageBonus(Actor);
-	virtual int getMeleeKnockbackBonus(void);
-	virtual void travel(float, float, float, bool);
-	virtual void applyFinalFriction(float, bool);
-	virtual void aiStep(void);
-	virtual void aiStep2(class IMobMovementProxy&);
-	virtual void pushActors(void);
-	virtual void lookAt(Actor*, float, float);
-	virtual bool isLookingAtAnEntity(void);
-	virtual void checkSpawnRules(bool);
-	virtual void checkSpawnObstruction(void);
-	virtual float getAttackAnim(float);
-	virtual int getItemUseDuration(void);
-	virtual int getItemUseStartupProgress(void);
-	virtual int getItemUseIntervalProgress(void);
-	virtual int getItemUseIntervalAxis(void);
-	virtual int getTimeAlongSwing(void);
-	virtual void ate(void);
-	virtual int getMaxHeadXRot(void);
-	virtual bool isAlliedTo(Actor);
-	virtual void doHurtTarget(Actor*, ActorDamageCause const&);
-	virtual void canBeControlledByPassenger(void);
-	virtual void leaveCaravan(void);
-	virtual void joinCaravan(Actor);
-	virtual void hasCaravanTail(void);
-	virtual int getCaravanHead(void);
-	virtual int getArmorValue(void);
-	virtual int getArmorCoverPercentage(void);
-	virtual int getToughnessValue(void);
-	virtual void hurtArmorSlots(ActorDamageSource const&, int, std::bitset<4ul>);
-	virtual void setDamagedArmor(ArmorSlot, ItemStack const&);
-	virtual void sendArmorDamage(std::bitset<4ul>);
-	virtual void sendArmor(std::bitset<4ul>);
-	virtual void containerChanged(int);
-	virtual void updateEquipment(void);
-	virtual void clearEquipment(void);
-	virtual int getAllArmorID(void);
-	virtual int getAllHand(void);
-	virtual int getAllEquipment(void);
-	virtual int getArmorTypeHash(void);
-	virtual void dropEquipmentOnDeath(ActorDamageSource const&, int);
-	virtual void dropEquipmentOnDeath(void);
-	virtual void clearVanishEnchantedItemsOnDeath(void);
-	virtual void sendInventory(bool);
-	virtual float getDamageAfterEnchantReduction(ActorDamageSource const&, float);
-	virtual float getDamageAfterArmorReduction(ActorDamageSource const&, float);
-	virtual float getDamageAfterResistanceEffect(ActorDamageSource const&, float);
-	virtual void createAIGoals(void);
-	virtual void onBorn(Actor&, Actor&);
-	virtual void setItemSlot(EquipmentSlot, ItemStack const&);
-	virtual void setTransitioningSitting(bool);
-	virtual void attackAnimation(Actor*, float);
-	virtual int getAttackTime(void);
-	virtual void _getWalkTargetValue(class BlockPos const&);
-	virtual void canExistWhenDisallowMob(void);
-	virtual void ascendLadder(void);
-	virtual void ascendBlockByJumping(void);
-	virtual void descendBlockByCrouching(void);
-	virtual void dropContainer(void);
-	virtual void initBodyControl(void);
-	virtual void jumpFromGround(BlockSource* const&);
-	virtual void jumpFromGround(class IMobMovementProxy&, BlockSource* const&);
-	virtual void newServerAiStep(void);
-	virtual void _serverAiMobStep(void);
-	virtual void dropBags(void);
-	virtual void tickDeath(void);
-	virtual void updateGliding(void);
-	virtual void _allowAscendingScaffolding(void);
-	virtual void _getAdjustedAABBForSpawnCheck(AABB<float> const&, struct Vec3 const&);
-	virtual void prepareRegion(ChunkSource&);
-	virtual void destroyRegion(void);
-	virtual void suspendRegion(void);
-	virtual void resendAllChunks(void);
-	virtual void _fireWillChangeDimension(void);
-	virtual void _fireDimensionChanged(void);
-	virtual void changeDimensionWithCredits(/*AutomaticID<Dimension, int>*/);
-	virtual void tickWorld(Tick const&);
-private:
-	virtual void Function353();
-public:
-	virtual int getTickingOffsets(void);
-	virtual void moveView(void);
-	virtual void moveSpawnView(/*struct Vec3 const&, AutomaticID<Dimension, int>*/);
-	virtual void setName(std::string const&);
-	virtual int getTravelledMethod(void);
-	virtual void checkMovementStats(struct Vec3 const&);
-	virtual int getCurrentStructureFeature(void);
-	virtual bool isAutoJumpEnabled(void);
-	virtual void respawn(void);
-	virtual void resetRot(void);
-	virtual bool isInTrialMode(void);
-	virtual void hasResource(int);
-	virtual void completeUsingItem(void);
-	virtual void startDestroying(void);
-	virtual void stopDestroying(void);
-	virtual void openPortfolio(void);
-	virtual void openBook(int, bool, int, class BlockActor*);
-	virtual void openTrading(uint64_t const&, bool);
-	virtual void canOpenContainerScreen(void);
-	virtual void openChalkboard(class ChalkboardBlockActor&, bool);
-	virtual void openNpcInteractScreen(std::shared_ptr<INpcDialogueData>);
-	virtual void openInventory(void);
-	virtual void displayChatMessage(std::string const&, std::string const&);
-	virtual void displayClientMessage(std::string const&);
-	virtual void displayTextObjectMessage(class TextObjectRoot const&, std::string const&, std::string const&);
-	virtual void displayTextObjectWhisperMessage(ResolvedTextObject const&, std::string const&, std::string const&);
-	virtual void displayTextObjectWhisperMessage(std::string const&, std::string const&, std::string const&);
-	virtual void displayWhisperMessage(std::string const&, std::string const&, std::string const&, std::string const&);
-	virtual void startSleepInBed(BlockPos const&);
-	virtual void stopSleepInBed(bool, bool);
-	virtual void canStartSleepInBed(void);
-	virtual int getSleepTimer(void);
-	virtual int getPreviousTickSleepTimer(void);
-	virtual void openSign(BlockPos const&, bool);
-	virtual void playEmote(std::string const&, bool);
-	virtual bool isHostingPlayer(void);
-	virtual bool isLoading(void);
-	virtual bool isPlayerInitialized(void);
-	virtual void stopLoading(void);
-	virtual void registerTrackedBoss(uint64_t);
-	virtual void unRegisterTrackedBoss(uint64_t);
-	virtual void setPlayerGameType(GameType);
-	virtual void initHUDContainerManager(void);
-	virtual void _crit(Actor&);
-	virtual int getEventing(void);
-	virtual int getUserId(void);
-	virtual void sendEventPacket(EventPacket&);
-	virtual void addExperience(int);
-	virtual void addLevels(int);
-private:
-	virtual void Function403();
-	virtual void Function404();
-public:
-	virtual void inventoryChanged(Container&, int, ItemStack const&, ItemStack const&, bool);
-private:
-	virtual void Function406();
-public:
-	virtual void deleteContainerManager(void);
-	virtual bool isActorRelevant(Actor const&);
-private:
-	virtual void Function409();
-public:
-	virtual void onSuspension(void);
-	virtual void onLinkedSlotsChanged(void);
-	virtual void startCooldown(Item const*, bool);
-	virtual int getItemCooldownLeft(HashedString const&);
-	virtual int getItemCooldownLeft(int);
-	virtual int getMaxItemCooldownLeft(void);
-	virtual bool isItemOnCooldown(HashedString const&);
-private:
-	virtual void Function417();
-	virtual void Function418();
-public:
-	virtual void sendNetworkPacket(Packet&);
-private:
-	virtual void Function420();
-public:
-	virtual void reportMovementTelemetry(MovementEventType);
-	virtual bool isSimulated(void);
-	virtual int getXuid(void);
-	virtual int getMovementSettings(void);
-	virtual void addSavedChunk(ChunkPos const&);
-	virtual int getMaxChunkBuildRadius(void);
-	virtual void onMovePlayerPacketNormal(struct Vec3 const&, struct Vec2 const&, float);
-	virtual void _createChunkSource(ChunkSource&);
-	virtual void setAbilities(LayeredAbilities const&);
+    virtual void prepareRegion(void);
+    virtual void destroyRegion(void);
+    virtual void suspendRegion(void);
+    virtual void _fireDimensionChanged(void);
+    virtual void changeDimensionWithCredits(__int64);
+    virtual void tickWorld(void);
+    virtual void Function5();
+    virtual void getTickingOffsets(void);
+    virtual void moveView(void);
+    virtual void moveSpawnView(Vector3<float> const&, __int64);
+    virtual void checkMovementStats(Vector3<float> const&);
+    virtual void getCurrentStructureFeature(void);
+    virtual bool isAutoJumpEnabled(void);
+    virtual void respawn(void);
+    virtual void resetRot(void);
+    virtual bool isInTrialMode(void);
+    virtual void openPortfolio(void);
+    virtual void openBook(int, bool, int, void*);
+    virtual void openTrading(void*, bool);
+    virtual void openChalkboard(void*, bool);
+    virtual void openNpcInteractScreen();
+    virtual void openInventory(void);
+    virtual void displayChatMessage(std::string const&, std::string const&);
+    virtual void displayClientMessage(std::string const&);
+    virtual void displayTextObjectMessage(std::string const&, std::string const&);
+    virtual void displayTextObjectWhisperMessage(std::string const&, std::string const&);
+    virtual void displayTextObjectWhisperMessage(std::string const&, std::string const&, std::string const&);
+    virtual void displayWhisperMessage(std::string const&, std::string const&, std::string const&, std::string const&);
+    virtual void startSleepInBed(Vector3<int> const&);
+    virtual void stopSleepInBed(bool, bool);
+    virtual bool canStartSleepInBed(void);
+    virtual void openSign(Vector3<int> const&, bool);
+    virtual void playEmote(std::string const&, bool);
+    virtual bool isHostingPlayer(void);
+    virtual bool isLoading(void);
+    virtual bool isPlayerInitialized(void);
+    virtual void stopLoading(void);
+    virtual void setPlayerGameType();
+    virtual void initHUDContainerManager(void);
+    virtual void _crit(Actor*);
+    virtual void getEventing(void);
+    virtual void getUserId(void);
+    virtual void addExperience(int);
+    virtual void addLevels(int);
+    virtual void Function43();
+    virtual void Function44();
+    virtual void Function45();
+    virtual void deleteContainerManager(void);
+    virtual bool isActorRelevant(Actor const&);
+    virtual void Function48();
+    virtual void onSuspension(void);
+    virtual void onLinkedSlotsChanged(void);
+    virtual void Function51();
+    virtual void Function52();
+    virtual void sendNetworkPacket(Packet&);
+    virtual void Function54();
+    virtual void reportMovementTelemetry();
+    virtual bool isSimulated(void);
+    virtual void getXuid(void);
+    virtual void getMovementSettings(void);
+    virtual void getMaxChunkBuildRadius(void);
+    virtual void onMovePlayerPacketNormal(Vector3<float> const&, Vector2<float> const&, float);
+    virtual void _createChunkSource();
+    virtual void setAbilities();
+    virtual void Function63();
+    virtual void Function64();
 
 public:
-	PlayerInventory* getSupplies()
-	{
-		uintptr_t address = reinterpret_cast<uintptr_t>(this);
-		return *reinterpret_cast<PlayerInventory**>(address + 0x848);
-	}
-	RenderPositionComponent* getRenderPositionComponent() {
-		using getRenderPositionComponent = RenderPositionComponent * (__cdecl*)(void*, EntityId*);
-		static auto func = reinterpret_cast<getRenderPositionComponent>(findSig(xorstr_("40 53 48 83 EC ? 48 8B DA BA 6E F3 E8 D4")));
-		auto registryBase = *reinterpret_cast<void**>(this->GetEntityContext()->registry);
-		return func(registryBase, &this->GetEntityContext()->entityId);
-	}
-
-	RuntimeIDComponent* getRuntimeIDComponent() {
-		using getRuntimeIDComponent = RuntimeIDComponent * (__cdecl*)(void*, EntityId*);
-		static auto func = reinterpret_cast<getRuntimeIDComponent>(findSig(xorstr_("40 53 48 83 EC ? 48 8B DA BA 14 14 A1 3C")));
-		auto registryBase = *reinterpret_cast<void**>(this->GetEntityContext()->registry);
-		return func(registryBase, &this->GetEntityContext()->entityId);
-	}
-
-	RenderRotationComponent* getRenderRotationComponent() {
-		using getRenderRotationComponent = RenderRotationComponent * (__cdecl*)(void*, EntityId*);
-		static auto func = reinterpret_cast<getRenderRotationComponent>(findSig(xorstr_("40 53 48 83 EC ? 48 8B DA BA A5 3A 53 2B")));
-		auto registryBase = *reinterpret_cast<void**>(this->GetEntityContext()->registry);
-		return func(registryBase, &this->GetEntityContext()->entityId);
-	}
-
-	InventoryTransactionManager* getTransactionManager() {
-		static unsigned int offset = 0;
-		if (!offset) {
-			void* address = findSig(xorstr_("49 8D 8E ? ? ? ? E8 ? ? ? ? 90 48 8D 8D ? ? ? ? E8 ? ? ? ? EB"));
-			offset = *reinterpret_cast<int*>(reinterpret_cast<char*>(address) + 3);
-		}
-		return reinterpret_cast<InventoryTransactionManager*>(reinterpret_cast<char*>(this) + offset);
-	}
-
-	GameMode* getGameMode()
-	{
-		uintptr_t address = reinterpret_cast<uintptr_t>(this);
-		return *reinterpret_cast<GameMode**>(address + 0xEF8);
-	}
-
-	void DisplayClientMessage(const char* msg)
-	{
-		TextHolder holder = TextHolder(msg);
-		CallFunc<void*, Player*, TextHolder*>(Addresses::DisplayClientMessageAddr, this, &holder);
-	}
-
-	void TeleportTo(Vector3<float> pos) // 232 swing?
-	{
-		CallFunc<void*, Player*, Vector3<float> const&>(Addresses::TeleportToAddr, this, pos);
-	}
-
-	DirectPlayerMovementProxy* getMovementProxy()
-	{
-		using fn = void(__fastcall*)(Player*, std::shared_ptr<void>*);
-		static fn oFunc = (fn)Addresses::GetMovementProxy;
-		std::shared_ptr<void> ptr;
-		oFunc(this, &ptr);
-		return (DirectPlayerMovementProxy*)ptr.get(); //TODO: fix proxy crashing
-	}
-	void jumpFromDaGround()
-	{
-		return CallVFunc<342, void>(this);
-	}
-
-	void PacketAttack(Player* target)
-	{
-		Vector3<float> startPoint = GetPosition();
-		Vector3<float> endPoint = target->GetPosition();
-
-		float distance = startPoint.distance(endPoint);
-
-		GameMode* gameMode = Game::GetGameMode();
-
-		if (!gameMode)
-			return;
-
-		if (distance <= 7)
-		{
-			gameMode->attack(target);
-			return; // already in range so discard teleport packets
-		}
-
-		if (distance <= 18)
-		{
-			Vector3<float> newPoint = getNextPoint(startPoint, endPoint, 7);
-
-			TeleportTo(newPoint);
-			gameMode->attack(target);
-			lifeboatTpTarget = startPoint;
-		}
-	}
-
-	Vector3<float>* GetHurttime()
-	{
-		if (!this)
-			return nullptr;
-
-		return reinterpret_cast<Vector3<float>*>((uintptr_t)this + Addresses::hurttimeComponent);
-	}
-
-	Vector2<float> getMoveVec()
-	{
-		Vector2<float> moveVec = { 0.0f, 0.0f };
+    PlayerInventory* getSupplies()
+    {
+        uintptr_t address = reinterpret_cast<uintptr_t>(this);
+        return *reinterpret_cast<PlayerInventory**>(address + 0x7E8); // Updated to 1.20.51
+        // 0x848 1.20.0.1
+    }
+    RenderPositionComponent* getRenderPositionComponent() {
+        using getRenderPositionComponent = RenderPositionComponent * (__cdecl*)(void*, EntityId*);
+        static auto func = reinterpret_cast<getRenderPositionComponent>(findSig(xorstr_("40 53 48 83 EC 20 48 8B DA BA 6E F3 E8 D4"))); // Updated to 1.20.51
+        //40 53 48 83 EC ? 48 8B DA BA 6E F3 E8 D4")));
+        auto registryBase = *reinterpret_cast<void**>(this->GetEntityContext()->registry);
+        return func(registryBase, &this->GetEntityContext()->entityId);
+    }
+
+    RuntimeIDComponent* getRuntimeIDComponent() {
+        using getRuntimeIDComponent = RuntimeIDComponent * (__cdecl*)(void*, EntityId*);
+        static auto func = reinterpret_cast<getRuntimeIDComponent>(findSig(xorstr_("40 53 48 83 EC ? 48 8B DA BA 14 14 A1 3C")));
+        auto registryBase = *reinterpret_cast<void**>(this->GetEntityContext()->registry);
+        return func(registryBase, &this->GetEntityContext()->entityId);
+    }
+
+    RenderRotationComponent* getRenderRotationComponent() {
+        using getRenderRotationComponent = RenderRotationComponent * (__cdecl*)(void*, EntityId*);
+        static auto func = reinterpret_cast<getRenderRotationComponent>(findSig(xorstr_("40 53 48 83 EC ? 48 8B DA BA A5 3A 53 2B")));
+        auto registryBase = *reinterpret_cast<void**>(this->GetEntityContext()->registry);
+        return func(registryBase, &this->GetEntityContext()->entityId);
+    }
+
+    InventoryTransactionManager* getTransactionManager() {
+        static unsigned int offset = 0;
+        if (!offset) {
+            void* address = findSig(xorstr_("49 8D 8E ? ? ? ? E8 ? ? ? ? 90 48 8D 8D ? ? ? ? E8 ? ? ? ? EB"));
+            offset = *reinterpret_cast<int*>(reinterpret_cast<char*>(address) + 3);
+        }
+        return reinterpret_cast<InventoryTransactionManager*>(reinterpret_cast<char*>(this) + offset);
+    }
+
+    GameMode* getGameMode()
+    {
+        uintptr_t address = reinterpret_cast<uintptr_t>(this);
+        return *reinterpret_cast<GameMode**>(address + 0xF10); // Updated to 1.20.51
+        // 0xEF8 1.20.0.1
+    }
+
+    void DisplayClientMessage(const char* msg)
+    {
+        TextHolder holder = TextHolder(msg);
+        CallFunc<void*, Player*, TextHolder*>(Addresses::DisplayClientMessageAddr, this, &holder);
+    }
+
+    void TeleportTo(Vector3<float> pos) // 232 swing?
+    {
+        CallFunc<void*, Player*, Vector3<float> const&>(Addresses::TeleportToAddr, this, pos);
+    }
+
+    DirectPlayerMovementProxy* getMovementProxy()
+    {
+        using fn = void(__fastcall*)(Player*, std::shared_ptr<void>*);
+        static fn oFunc = (fn)Addresses::GetMovementProxy;
+        std::shared_ptr<void> ptr;
+        oFunc(this, &ptr);
+        return (DirectPlayerMovementProxy*)ptr.get(); //TODO: fix proxy crashing
+    }
+    void jumpFromDaGround()
+    {
+        return CallVFunc<342, void>(this);
+    }
+
+    void PacketAttack(Player* target)
+    {
+        Vector3<float> startPoint = GetPosition();
+        Vector3<float> endPoint = target->GetPosition();
+
+        float distance = startPoint.distance(endPoint);
+
+        GameMode* gameMode = Game::GetGameMode();
+
+        if (!gameMode)
+            return;
+
+        if (distance <= 7)
+        {
+            gameMode->attack(target);
+            return; // already in range so discard teleport packets
+        }
+
+        if (distance <= 18)
+        {
+            Vector3<float> newPoint = getNextPoint(startPoint, endPoint, 7);
+
+            TeleportTo(newPoint);
+            gameMode->attack(target);
+            lifeboatTpTarget = startPoint;
+        }
+    }
+
+    Vector3<float>* GetHurttime()
+    {
+        if (!this)
+            return nullptr;
+
+        return reinterpret_cast<Vector3<float>*>((uintptr_t)this + Addresses::hurttimeComponent);
+    }
 
-		if (Game::Core::Keymap[GameInput::Forwards])
-			moveVec.x += 1.0f;
+    Vector2<float> getMoveVec()
+    {
+        Vector2<float> moveVec = { 0.0f, 0.0f };
 
-		if (Game::Core::Keymap[GameInput::Backwards])
-			moveVec.x -= 1.0f;
+        if (Game::Core::Keymap[GameInput::Forwards])
+            moveVec.x += 1.0f;
 
-		if (Game::Core::Keymap[GameInput::Left])
-			moveVec.y -= 1.0f;
+        if (Game::Core::Keymap[GameInput::Backwards])
+            moveVec.x -= 1.0f;
 
-		if (Game::Core::Keymap[GameInput::Right])
-			moveVec.y += 1.0f;
+        if (Game::Core::Keymap[GameInput::Left])
+            moveVec.y -= 1.0f;
 
-		return moveVec;
-	}
+        if (Game::Core::Keymap[GameInput::Right])
+            moveVec.y += 1.0f;
 
-	bool isOnGround()
-	{
-		DirectPlayerMovementProxy* proxy = this->getMovementProxy();
+        return moveVec;
+    }
 
-		if (!proxy)
-			return true;
+    bool isOnGround()
+    {
+        DirectPlayerMovementProxy* proxy = this->getMovementProxy();
 
-		return this->getMovementProxy()->isOnGround();
-	}
+        if (!proxy)
+            return true;
 
-	Block* GetStandingBlock()
-	{
-		BlockSource* src = Game::GetInstance()->getBlockSource();
+        return this->getMovementProxy()->isOnGround();
+    }
 
-		if (!src)
-			return nullptr;
+    Block* GetStandingBlock()
+    {
+        BlockSource* src = Game::GetInstance()->getBlockSource();
 
-		Vector3<float> blockBelow = this->GetPosition();
+        if (!src)
+            return nullptr;
 
-		return src->getBlock(blockBelow.ToInt());
-	}
+        Vector3<float> blockBelow = this->GetPosition();
 
-	bool IsBadPtr()
-	{
-		MEMORY_BASIC_INFORMATION mbi;
+        return src->getBlock(blockBelow.ToInt());
+    }
 
-		if (VirtualQuery(reinterpret_cast<LPCVOID>(this), &mbi, sizeof(mbi)) == 0 ||
-			mbi.State != MEM_COMMIT || !(mbi.Protect & PAGE_READWRITE))
-			return true;
+    bool IsBadPtr()
+    {
+        MEMORY_BASIC_INFORMATION mbi;
 
-		if (!this)
-			return true;
+        if (VirtualQuery(reinterpret_cast<LPCVOID>(this), &mbi, sizeof(mbi)) == 0 ||
+            mbi.State != MEM_COMMIT || !(mbi.Protect & PAGE_READWRITE))
+            return true;
 
-		return false;
-	}
+        if (!this)
+            return true;
 
-	/*
+        return false;
+    }
 
-	std::string getNameTag()
-	{
-		if (!this || IsBadPtr())
-			return std::string("");
+    /*
 
-		if (Game::GetLocalPlayer()->GetPosition().distance(GetPosition()) < 320)
-			return std::string("");
+    std::string getNameTag()
+    {
+        if (!this || IsBadPtr())
+            return std::string("");
 
-		const char* ptr = reinterpret_cast<const char*>(this + 0x1CC0);
+        if (Game::GetLocalPlayer()->GetPosition().distance(GetPosition()) < 320)
+            return std::string("");
 
-		if (ptr == nullptr || reinterpret_cast<uintptr_t>(ptr) >= range_start)
-			return std::string("");
+        const char* ptr = reinterpret_cast<const char*>(this + 0x1CC0);
 
-		int length = 0;
-		std::string result;
-		while (*ptr != '\0')
-		{
-			result += *ptr;
-			ptr++;
-			length++;
+        if (ptr == nullptr || reinterpret_cast<uintptr_t>(ptr) >= range_start)
+            return std::string("");
 
-			if (length >= 24)
-				return std::string("");
-		}
-		return result;
-	}
+        int length = 0;
+        std::string result;
+        while (*ptr != '\0')
+        {
+            result += *ptr;
+            ptr++;
+            length++;
 
-	*/
+            if (length >= 24)
+                return std::string("");
+        }
+        return result;
+    }
 
-	template<typename T>
-	T* try_get()
-	{
-		if (IsBadReadPtr(this, sizeof(Player)))
-			return nullptr;
+    */
 
-		uintptr_t ptr = (uintptr_t)this + Addresses::actorStateComponent;
+    template<typename T>
+    T* try_get()
+    {
+        if (IsBadReadPtr(this, sizeof(Player)))
+            return nullptr;
 
-		if (ptr >= range_start || ptr <= 0x1000)
-			return nullptr;
+        uintptr_t ptr = (uintptr_t)this + 0x2C8; // Updated to 1.20.51
 
-		if (std::is_same<T, StateVectorComponent>::value)
-		{
-			return *reinterpret_cast<T**>(ptr);
-		}
+        if (ptr >= range_start || ptr <= 0x1000)
+            return nullptr;
 
-		if (std::is_same<T, AABBShapeComponent>::value)
-		{
-			return *reinterpret_cast<T**>(ptr + 8);
-		}
+        if (std::is_same<T, StateVectorComponent>::value)
+        {
+            return *reinterpret_cast<T**>(ptr);
+        }
 
-		if (std::is_same<T, MovementInterpolatorComponent>::value)
-		{
-			return *reinterpret_cast<T**>(ptr + 16);
-		}
+        if (std::is_same<T, AABBShapeComponent>::value)
+        {
+            return *reinterpret_cast<T**>((uintptr_t)this + 0x2D0); // Updated to 1.20.51
+        }
 
-		EntityContext* ctx = GetEntityContext();
+        if (std::is_same<T, MovementInterpolatorComponent>::value)
+        {
+            return *reinterpret_cast<T**>(ptr + 16);
+        }
 
-		void* registryBase = *reinterpret_cast<void**>(ctx->registry);;
-		EntityId* entId = &ctx->entityId;
+        EntityContext* ctx = GetEntityContext();
 
-		if (std::is_same<T, RuntimeIDComponent>::value)
-		{
-			return CallFunc<T*, void*, EntityId*>(Addresses::TryGet_RuntimeId, registryBase, entId);
-		}
-	}
+        void* registryBase = *reinterpret_cast<void**>(ctx->registry);;
+        EntityId* entId = &ctx->entityId;
 
-	EntityContext* GetEntityContext()
-	{
-		uintptr_t address = reinterpret_cast<uintptr_t>(this);
-		return reinterpret_cast<EntityContext*>(address + 8);
-	}
+        if (std::is_same<T, RuntimeIDComponent>::value)
+        {
+            return CallFunc<T*, void*, EntityId*>(Addresses::TryGet_RuntimeId, registryBase, entId);
+        }
+    }
 
-	Level* GetLevel()
-	{
-		uintptr_t address = reinterpret_cast<uintptr_t>(this);
-		return *reinterpret_cast<Level**>(address + 0x260);
-	}
+    EntityContext* GetEntityContext()
+    {
+        uintptr_t address = reinterpret_cast<uintptr_t>(this);
+        return reinterpret_cast<EntityContext*>((uintptr_t)this + 0x8); // Updated to 1.20.51
+        // The same offset in 1.20.0.1
+    }
 
-	float getVerticalSpeed()
-	{
-		StateVectorComponent* stateVec = try_get<StateVectorComponent>();
+    Level* GetLevel()
+    {
+        uintptr_t address = reinterpret_cast<uintptr_t>(this);
+        return *reinterpret_cast<Level**>(address + 0x288); // Updated to 1.20.51
+        // 0x260 in 1.20.0.1
+    }
 
-		if (!stateVec)
-			return 0;
+    float getVerticalSpeed()
+    {
+        StateVectorComponent* stateVec = try_get<StateVectorComponent>();
 
-		float currentYPosition = stateVec->Position.y;
-		float lastYPosition = stateVec->PrevPosition.y;
+        if (!stateVec)
+            return 0;
 
-		return (currentYPosition - lastYPosition) * (*Game::GetInstance()->getMinecraft()->timer);
-	}
+        float currentYPosition = stateVec->Position.y;
+        float lastYPosition = stateVec->PrevPosition.y;
 
-	float GetReachDistance()
-	{
-		return 3;
-	}
+        return (currentYPosition - lastYPosition) * (*Game::GetInstance()->getMinecraft()->timer);
+    }
 
-	float getHorizontalSpeed()
-	{
-		StateVectorComponent* stateVec = try_get<StateVectorComponent>();
+    float GetReachDistance()
+    {
+        return 3;
+    }
 
-		if (!stateVec)
-			return 0;
+    float getHorizontalSpeed()
+    {
+        StateVectorComponent* stateVec = try_get<StateVectorComponent>();
 
-		Vector3<float> currentPosition = stateVec->Position;
-		currentPosition.y = 0;
+        if (!stateVec)
+            return 0;
 
-		Vector3<float> lastPosition = stateVec->PrevPosition;
-		lastPosition.y = 0;
+        Vector3<float> currentPosition = stateVec->Position;
+        currentPosition.y = 0;
 
-		return (currentPosition.distance(lastPosition)) * (*Game::GetInstance()->getMinecraft()->timer);
-	}
+        Vector3<float> lastPosition = stateVec->PrevPosition;
+        lastPosition.y = 0;
 
-	Vector3<float> GetPosition(bool tpReady = true)
-	{
-		DirectPlayerMovementProxy* proxy = getMovementProxy();
+        // i replaced timer 0xD0 to 0xD8 and minecraft from 0xD0 to 0xD8 now timer doesn't work on 1.20.51 idk why
+        return (currentPosition.distance(lastPosition)) * /*(*Game::GetInstance()->getMinecraft()->timer)*/ 20;
+    }
 
-		if (!proxy)
-			return { 0,0,0 };
+    Vector3<float> GetPosition(bool tpReady = true)
+    {
+        return stateVector->Position; // Updated to 1.20.51
+    }
 
-		Vector3<float> pos = proxy->getAABB()->lower;
+    Vector3<int> GetBlockPosition()
+    {
+        DirectPlayerMovementProxy* proxy = getMovementProxy();
 
-		if (tpReady)
-		{
-			pos.x += proxy->getAABBDim().x / 2;
-			pos.z += proxy->getAABBDim().x / 2;
-		}
+        if (!proxy)
+            return { 0,0,0 };
 
-		return pos;
-	}
+        Vector3<float> pos = proxy->getAABB()->lower;
 
-	Vector3<int> GetBlockPosition()
-	{
-		DirectPlayerMovementProxy* proxy = getMovementProxy();
+        return { (int)floor(pos.x), (int)floor(pos.y), (int)floor(pos.z) };
+    }
 
-		if (!proxy)
-			return { 0,0,0 };
+    void SetPos(Vector3<float> pos)
+    {
+        AABBShapeComponent* shape = try_get<AABBShapeComponent>();
 
-		Vector3<float> pos = proxy->getAABB()->lower;
+        if (!shape)
+            return;
 
-		return { (int)floor(pos.x), (int)floor(pos.y), (int)floor(pos.z) };
-	}
+        shape->r_Pos_Lower = pos;
+        shape->r_Pos_Upper = pos + shape->r_Hitbox;
+    }
 
-	void SetPos(Vector3<float> pos)
-	{
-		AABBShapeComponent* shape = try_get<AABBShapeComponent>();
+    Vector3<float> getDirectionalVector(Vector2<float> rots)
+    {
+        Vector3<float> tmpVec;
 
-		if (!shape)
-			return;
+        tmpVec.x = cos(rots.x) * cos(rots.y);
+        tmpVec.y = sin(rots.y);
+        tmpVec.x = sin(rots.x) * cos(rots.y);
 
-		shape->r_Pos_Lower = pos;
-		shape->r_Pos_Upper = pos + shape->r_Hitbox;
-	}
+        return tmpVec;
+    }
 
-	Vector3<float> getDirectionalVector(Vector2<float> rots)
-	{
-		Vector3<float> tmpVec;
+    bool isBot()
+    {
+        AABBShapeComponent* shape = try_get<AABBShapeComponent>();
+        MovementInterpolatorComponent* movement = try_get<MovementInterpolatorComponent>();
 
-		tmpVec.x = cos(rots.x) * cos(rots.y);
-		tmpVec.y = sin(rots.y);
-		tmpVec.x = sin(rots.x) * cos(rots.y);
+        if (!shape || !movement)
+            return true;
 
-		return tmpVec;
-	}
+        if (shape->r_Hitbox.x != 0.6f || shape->r_Hitbox.y != 1.8f)
+            return true;
 
-	bool isBot()
-	{
-		AABBShapeComponent* shape = try_get<AABBShapeComponent>();
-		MovementInterpolatorComponent* movement = try_get<MovementInterpolatorComponent>();
+        if (movement->Rotations.x == 0 || movement->Rotations.y == 0)
+            return true;
 
-		if (!shape || !movement)
-			return true;
+        return false;
+    }
 
-		if (shape->r_Hitbox.x != 0.6f || shape->r_Hitbox.y != 1.8f)
-			return true;
+    Vector3<float> getLookingVector()
+    {
+        Vector3<float> tmpVec;
 
-		if (movement->Rotations.x == 0 || movement->Rotations.y == 0)
-			return true;
+        MovementInterpolatorComponent* move = try_get<MovementInterpolatorComponent>();
 
-		return false;
-	}
+        Vector2<float> rots = move->Rotations;
 
-	Vector3<float> getLookingVector()
-	{
-		Vector3<float> tmpVec;
+        float cYaw = (rots.y + 90) * 0.01745327;
+        float cPitch = rots.x * 0.01745327;
 
-		MovementInterpolatorComponent* move = try_get<MovementInterpolatorComponent>();
+        tmpVec.x = cos(cYaw) * cos(cPitch);
+        tmpVec.y = sin(cPitch);
+        tmpVec.z = sin(cYaw) * cos(cPitch);
 
-		Vector2<float> rots = move->Rotations;
+        return tmpVec;
+    }
 
-		float cYaw = (rots.y + 90) * 0.01745327;
-		float cPitch = rots.x * 0.01745327;
+    uintptr_t* GetVTable(int index)
+    {
+        uintptr_t** VTable = reinterpret_cast<uintptr_t**>(this);
 
-		tmpVec.x = cos(cYaw) * cos(cPitch);
-		tmpVec.y = sin(cPitch);
-		tmpVec.z = sin(cYaw) * cos(cPitch);
-
-		return tmpVec;
-	}
-
-	uintptr_t* GetVTable(int index)
-	{
-		uintptr_t** VTable = reinterpret_cast<uintptr_t**>(this);
-
-		return VTable[index];
-	}
+        return VTable[index];
+    }
+public:
+    BUILD_ACCESS(this, struct EntityContext, entityContext, 0x8); // Updated to 1.20.51
+    BUILD_ACCESS(this, class EntityLocation*, location, 0x2A0); // Updated to 1.20.51
+    BUILD_ACCESS(this, StateVectorComponent*, stateVector, 0x2C8); // Updated to 1.20.51
+    BUILD_ACCESS(this, AABBShapeComponent*, aabbShape, 0x2D0); // Updated to 1.20.51
+    BUILD_ACCESS(this, MovementInterpolatorComponent*, moveInterpolator, 0x2C8 + 16); // Updated to 1.20.51
 };
 
 static std::map<__int32, uintptr_t> __o__entitylist = std::map<__int32, uintptr_t>();
