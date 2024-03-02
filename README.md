@@ -1,4 +1,1 @@
-The best hive client to ever exist!
-
-
-Note to Enzo: Tysm for joining you will not regret it!
+This client is fully updated to 1.20.51 please fix the crash! 
