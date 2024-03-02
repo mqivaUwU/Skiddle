@@ -149,13 +149,13 @@ void SetupAndRenderDetour(
             (void*)&DrawTextDetour,
             &__o__DrawText,
             "DrawString"
-        );
-        auto Loopback_VTable = *(uintptr_t**)ctx->ClientInstance->getPacketSender();
-        HookFunction(
-            (void*)Loopback_VTable[2],
-            (void*)&SendToServerDetour,
-            &__o__SendPacket,
-            "SendToServer"
+        //);
+        //auto Loopback_VTable = *(uintptr_t**)ctx->ClientInstance->getPacketSender();
+        //HookFunction(
+          //  (void*)Loopback_VTable[2],
+            //(void*)&SendToServerDetour,
+            //&__o__SendPacket,
+            //"SendToServer"
         );
         HookFunction(
             (void*)VTable[7],

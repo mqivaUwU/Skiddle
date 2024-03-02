@@ -35,7 +35,7 @@ public:
 
 	LoopbackPacketSender* getPacketSender()
 	{
-		//return *reinterpret_cast<LoopbackPacketSender**>((uintptr_t)this + 0xF0); // Updated to 1.20.51
+		return *reinterpret_cast<LoopbackPacketSender**>((uintptr_t)this + 0xF0); // Updated to 1.20.51
 		// The same offset on 1.20.0.1
 	}
 
@@ -137,7 +137,7 @@ public:
 		return true;
 	}
 	public:
-		BUILD_ACCESS(this, class LoopbackPacketSender*, LoopbackPacketSender, 0xF0); // Updated to 1.20.51
+		BUILD_ACCESS(this, class GetPacketSender*, GetPacketSender, 0xF0); // Updated to 1.20.51
 		BUILD_ACCESS(this, class MinecraftGame*, MinecraftGame, 0xC8); // Updated to 1.20.51
 		BUILD_ACCESS(this, class Minecraft*, Minecraft, 0xD0); // Updated to 1.20.51
 		BUILD_ACCESS(this, class GuiData*, GuiData, 0x560); // Updated to 1.20.51
