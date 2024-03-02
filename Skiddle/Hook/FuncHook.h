@@ -25,7 +25,7 @@ public:
 #include "Hooks/RakPeer/RakPeerHooks.h"
 #include "Hooks/Camera/CameraHooks.h"
 #include "Hooks/ChatLogHooks.h"
-#include "Hooks/Unused/GammaTick.h"
+// #include "Hooks/Unused/GammaTick.h"
 // #include "Hooks/Unused/UIControl.h"
 #include "Hooks/getTimeHook.h"
 
@@ -46,7 +46,7 @@ void InitializeHooks()
         &RakPeerHooks::Instance(),
         &CameraHooks::Instance(),
         //&ChatLogHook::Instance(), Ugly AF
-        &GammaTickHook::Instance(),
+        //&GammaTickHook::Instance(),
         &getTimeHook::Instance(),
     };
 

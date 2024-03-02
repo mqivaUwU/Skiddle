@@ -112,6 +112,7 @@
     <ClCompile Include="Libs\minhook\hde\hde64.c" />
     <ClCompile Include="Libs\minhook\hook.c" />
     <ClCompile Include="Libs\minhook\trampoline.c" />
+    <ClCompile Include="SDK\GameCore\Game\ClientInstance\ClientInstance.cpp" />
     <ClCompile Include="Util\Render\Image\GifUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
